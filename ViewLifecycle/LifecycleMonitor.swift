@@ -7,7 +7,7 @@ struct LifecycleMonitor: View {
 	@State private var taskStartTimestamp: Date? = nil
 	@State private var onAppearTimestamp: Date? = nil
 	@State private var onDisappearTimestamp: Date? = nil
-	@State private var color: Color = .random()
+	@State private var color: Color = LifecycleMonitorColors.next()
 
 	var body: some View {
 		VStack(spacing: 16) {
@@ -50,7 +50,11 @@ struct LifecycleMonitor: View {
 		.frame(maxWidth: .infinity)
 		.background {
 			RoundedRectangle(cornerRadius: 16)
-				.fill(self.color)
+				.fill(self.color.opacity(0.18))
+				.overlay {
+					RoundedRectangle(cornerRadius: 16)
+						.stroke(self.color.opacity(0.35))
+				}
 		}
 		.task {
 			let timestamp = Date.now
@@ -98,12 +102,27 @@ struct LifecycleMonitor_Previews: PreviewProvider {
 	}
 }
 
-extension Color {
-	static func random() -> Self {
-		Color(
-			red: .random(in: 0.5 ... 0.9),
-			green: .random(in: 0.5 ... 0.9),
-			blue: .random(in: 0.5 ... 0.9)
-		)
+enum LifecycleMonitorColors {
+	private static var nextIndex: Int = 0
+
+	private static let palette: [Color] = [
+		.red,
+		.orange,
+		.yellow,
+		.green,
+		.mint,
+		.teal,
+		.cyan,
+		.blue,
+		.indigo,
+		.purple,
+		.pink,
+		.brown,
+	]
+
+	static func next() -> Color {
+		let color = self.palette[self.nextIndex % self.palette.count]
+		self.nextIndex += 1
+		return color
 	}
 }
