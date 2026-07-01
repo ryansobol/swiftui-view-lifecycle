@@ -2,21 +2,26 @@ import SwiftUI
 
 struct RootView: View {
 	@State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
+	@State private var selection: CaseStudy.ID? = nil
 
 	var body: some View {
 		NavigationSplitView(columnVisibility: self.$columnVisibility) {
-			Sidebar()
+			Sidebar(selection: self.$selection)
 		} detail: {
-			Text("Select an item in the sidebar.")
+			if let selection = self.selection {
+				MainContent(caseStudyID: selection)
+			} else {
+				Text("Select a case study.")
+			}
 		}
 	}
 }
 
 struct Sidebar: View {
-	@State private var selection: CaseStudy? = nil
+	@Binding var selection: CaseStudy.ID?
 
 	var body: some View {
-		List {
+		List(selection: self.$selection) {
 			ForEach(categories) { section in
 				Section {
 					ForEach(section.elements) { caseStudy in
@@ -42,9 +47,6 @@ struct Sidebar: View {
 		#if !os(macOS)
 			.navigationBarTitleDisplayMode(.inline)
 		#endif
-			.navigationDestination(for: CaseStudy.ID.self) { id in
-				MainContent(caseStudyID: id)
-			}
 	}
 }
 
