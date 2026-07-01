@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -60,10 +60,8 @@
 /* Begin PBXFrameworksBuildPhase section */
 		5D6C3F652908541100A0C864 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -137,8 +135,6 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			name = ViewLifecycle;
 			productName = OnAppearInScrollView;
 			productReference = 5D6C3F682908541100A0C864 /* ViewLifecycle.app */;
@@ -160,7 +156,6 @@
 				};
 			};
 			buildConfigurationList = 5D6C3F632908541100A0C864 /* Build configuration list for PBXProject "ViewLifecycle" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -168,6 +163,7 @@
 				Base,
 			);
 			mainGroup = 5D6C3F5F2908541100A0C864;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 5D6C3F692908541100A0C864 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -180,19 +176,16 @@
 /* Begin PBXResourcesBuildPhase section */
 		5D6C3F662908541100A0C864 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				5D6C3F742908541200A0C864 /* Preview Assets.xcassets in Resources */,
 				5D6C3F702908541200A0C864 /* Assets.xcassets in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5D6C3F642908541100A0C864 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				5D0520B92934E6130080E4C0 /* CaseStudyLazyVGrid.swift in Sources */,
 				5DEE8423294A2BA700BD2649 /* CaseStudyOpacity.swift in Sources */,
@@ -212,12 +205,11 @@
 				5D60F905293FA5F400AE0726 /* CaseStudies.swift in Sources */,
 				5D6C3F6C2908541100A0C864 /* App.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		5D6C3F752908541200A0C864 /* Debug */ = {
+		5D6C3F752908541200A0C864 /* Debug configuration for PBXProject "ViewLifecycle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -280,7 +272,7 @@
 			};
 			name = Debug;
 		};
-		5D6C3F762908541200A0C864 /* Release */ = {
+		5D6C3F762908541200A0C864 /* Release configuration for PBXProject "ViewLifecycle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -336,7 +328,7 @@
 			};
 			name = Release;
 		};
-		5D6C3F782908541200A0C864 /* Debug */ = {
+		5D6C3F782908541200A0C864 /* Debug configuration for PBXNativeTarget "ViewLifecycle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -376,7 +368,7 @@
 			};
 			name = Debug;
 		};
-		5D6C3F792908541200A0C864 /* Release */ = {
+		5D6C3F792908541200A0C864 /* Release configuration for PBXNativeTarget "ViewLifecycle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -422,19 +414,17 @@
 		5D6C3F632908541100A0C864 /* Build configuration list for PBXProject "ViewLifecycle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5D6C3F752908541200A0C864 /* Debug */,
-				5D6C3F762908541200A0C864 /* Release */,
+				5D6C3F752908541200A0C864 /* Debug configuration for PBXProject "ViewLifecycle" */,
+				5D6C3F762908541200A0C864 /* Release configuration for PBXProject "ViewLifecycle" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		5D6C3F772908541200A0C864 /* Build configuration list for PBXNativeTarget "ViewLifecycle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5D6C3F782908541200A0C864 /* Debug */,
-				5D6C3F792908541200A0C864 /* Release */,
+				5D6C3F782908541200A0C864 /* Debug configuration for PBXNativeTarget "ViewLifecycle" */,
+				5D6C3F792908541200A0C864 /* Release configuration for PBXNativeTarget "ViewLifecycle" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
