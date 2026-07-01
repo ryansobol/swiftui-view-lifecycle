@@ -21,6 +21,11 @@
 			path = ViewLifecycle;
 			sourceTree = "<group>";
 		};
+		1D02D5682FF5D3780006DB98 /* assets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = assets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +42,7 @@
 			children = (
 				5DA36849294108CA00E91959 /* README.md */,
 				5DA368482941082900E91959 /* LICENSE.md */,
+				1D02D5682FF5D3780006DB98 /* assets */,
 				1D02D5502FF5CFCA0006DB98 /* ViewLifecycle */,
 				5D6C3F692908541100A0C864 /* Products */,
 				1D02D5382FF5C6250006DB98 /* devbox.json */,
