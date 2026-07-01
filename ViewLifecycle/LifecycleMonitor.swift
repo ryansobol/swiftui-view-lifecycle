@@ -4,6 +4,7 @@ import SwiftUI
 struct LifecycleMonitor: View {
 	var label: String
 	@State private var stateTimestamp: Date = .now
+	@State private var taskStartTimestamp: Date? = nil
 	@State private var onAppearTimestamp: Date? = nil
 	@State private var onDisappearTimestamp: Date? = nil
 	@State private var color: Color = .random()
@@ -21,6 +22,13 @@ struct LifecycleMonitor: View {
 						.gridColumnAlignment(.leading)
 				}
 				.help("When the state (incl. @State and @StateObject) for this view was created")
+
+				GridRow(alignment: .firstTextBaseline) {
+					Text("task")
+					Text(self.timestampLabel(for: self.taskStartTimestamp))
+						.monospacedDigit()
+				}
+				.help("When task was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onAppear")
@@ -43,6 +51,14 @@ struct LifecycleMonitor: View {
 		.background {
 			RoundedRectangle(cornerRadius: 16)
 				.fill(self.color)
+		}
+		.task {
+			let timestamp = Date.now
+			print("\(timestamp) \(self.label): task started")
+			let animation: Animation? = self.taskStartTimestamp == nil ? nil : .easeOut(duration: 1)
+			withAnimation(animation) {
+				self.taskStartTimestamp = timestamp
+			}
 		}
 		.onAppear {
 			let timestamp = Date.now
