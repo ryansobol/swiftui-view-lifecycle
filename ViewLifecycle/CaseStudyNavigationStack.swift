@@ -20,14 +20,9 @@ import SwiftUI
 #endif
 
 struct CaseStudyNavigationStack: View {
-	@State private var navigationPath: [Int] = []
-
 	var body: some View {
-		NavigationStack(path: self.$navigationPath) {
+		NavigationStack {
 			Content(level: 1)
-				.navigationDestination(for: Int.self) { level in
-					Content(level: level)
-				}
 		}
 	}
 
@@ -37,7 +32,9 @@ struct CaseStudyNavigationStack: View {
 		var body: some View {
 			List {
 				Section {
-					NavigationLink(value: self.level + 1) {
+					NavigationLink {
+						Content(level: self.level + 1)
+					} label: {
 						LifecycleMonitor(label: "Level \(self.level)")
 					}
 				} footer: {
