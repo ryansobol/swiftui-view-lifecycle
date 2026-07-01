@@ -1,29 +1,31 @@
 import SwiftUI
 
 struct CaseStudyIDModifier: View {
-    @State private var generation: Int = 0
+	@State private var generation: Int = 0
 
-    var body: some View {
-        VStack {
-            Button("Increment view ID") {
-                generation &+= 1
-            }
-            .buttonStyle(.bordered)
+	var body: some View {
+		VStack {
+			Button("Increment view ID") {
+				self.generation &+= 1
+			}
+			.buttonStyle(.bordered)
 
-            LifecycleMonitor(label: ".id(\(generation))")
-                .id(generation)
+			LifecycleMonitor(label: ".id(\(self.generation))")
+				.id(self.generation)
 
-            Text("`.id(_:)` resets the view identity (and hence the view’s state) whenever the argument changes. It’s as if an entirely new view is created.")
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding()
-        .navigationTitle(".id(_:)")
-    }
+			Text(
+				"`.id(_:)` resets the view identity (and hence the view’s state) whenever the argument changes. It’s as if an entirely new view is created."
+			)
+			.font(.caption)
+			.frame(maxWidth: .infinity, alignment: .leading)
+		}
+		.padding()
+		.navigationTitle(".id(_:)")
+	}
 }
 
 struct CaseStudyIDModifier_Previews: PreviewProvider {
-    static var previews: some View {
-        CaseStudyIDModifier()
-    }
+	static var previews: some View {
+		CaseStudyIDModifier()
+	}
 }
