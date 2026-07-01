@@ -29,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D02D5382FF5C6250006DB98 /* devbox.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = devbox.json; sourceTree = "<group>"; };
+		1D02D5392FF5C6D30006DB98 /* .editorconfig */ = {isa = PBXFileReference; lastKnownFileType = text; path = .editorconfig; sourceTree = "<group>"; };
+		1D02D53A2FF5C6F90006DB98 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		5D0520B62934DC330080E4C0 /* CaseStudyListStatic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseStudyListStatic.swift; sourceTree = "<group>"; };
 		5D0520B82934E6130080E4C0 /* CaseStudyLazyVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseStudyLazyVGrid.swift; sourceTree = "<group>"; };
 		5D305D1F293240F300E42700 /* LifecycleMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleMonitor.swift; sourceTree = "<group>"; };
@@ -72,6 +75,9 @@
 				5DA368482941082900E91959 /* LICENSE.md */,
 				5D6C3F6A2908541100A0C864 /* ViewLifecycle */,
 				5D6C3F692908541100A0C864 /* Products */,
+				1D02D5382FF5C6250006DB98 /* devbox.json */,
+				1D02D5392FF5C6D30006DB98 /* .editorconfig */,
+				1D02D53A2FF5C6F90006DB98 /* .swiftformat */,
 			);
 			sourceTree = "<group>";
 		};
@@ -332,7 +338,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewLifecycle/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6723MY98T4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -371,7 +377,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewLifecycle/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6723MY98T4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
