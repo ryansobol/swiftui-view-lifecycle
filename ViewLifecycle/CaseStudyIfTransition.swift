@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CaseStudyIfTransition: View {
-	private static let demonstrationAnimationDuration: TimeInterval = 1.5
+	private static let demonstrationAnimationDuration: TimeInterval = 0.75
 
 	@State private var isShowingPanel = false
 	@State private var events = [CaseStudyEvent]()
@@ -11,7 +11,7 @@ struct CaseStudyIfTransition: View {
 			Button(self.isShowingPanel ? "Hide panel" : "Show panel") {
 				self.togglePanel()
 			}
-			.buttonStyle(.borderedProminent)
+			.buttonStyle(.glassProminent)
 
 			ZStack(alignment: .leading) {
 				RoundedRectangle(cornerRadius: 8)
@@ -31,7 +31,7 @@ struct CaseStudyIfTransition: View {
 			.frame(height: 220)
 			.clipped()
 
-			EventLog(events: self.events, onClear: self.clearEvents)
+			EventLog(events: self.$events)
 				.layoutPriority(1)
 
 			Text(
@@ -82,10 +82,6 @@ struct CaseStudyIfTransition: View {
 		print("\(event.timestamp) transition: \(event.kind.label)")
 		self.events.append(event)
 	}
-
-	private func clearEvents() -> Void {
-		self.events.removeAll()
-	}
 }
 
 private struct TransitionPanel: View {
@@ -129,58 +125,6 @@ private struct TransitionPanel: View {
 		return switch self.colorScheme {
 		case .dark: Color(red: 0.08, green: 0.12, blue: 0.16)
 		default: Color(red: 0.88, green: 0.94, blue: 1.0)
-		}
-	}
-}
-
-private struct EventLog: View {
-	let events: [CaseStudyEvent]
-	let onClear: () -> Void
-
-	var body: some View {
-		VStack(alignment: .leading, spacing: 8) {
-			HStack {
-				Text("Event log")
-					.font(.headline)
-
-				Spacer()
-
-				Button("Clear", action: self.onClear)
-					.disabled(self.events.isEmpty)
-			}
-
-			if self.events.isEmpty {
-				Text("No events yet.")
-					.foregroundStyle(.secondary)
-					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-			}
-			else {
-				ScrollView {
-					LazyVStack(alignment: .leading, spacing: 6) {
-						ForEach(self.events) { event in
-							HStack(alignment: .firstTextBaseline) {
-								Text(event.timestamp, style: .timer)
-									.monospacedDigit()
-									.foregroundStyle(.secondary)
-									.frame(width: 72, alignment: .leading)
-
-								Text(event.kind.label)
-							}
-							.frame(maxWidth: .infinity, alignment: .leading)
-						}
-					}
-					.frame(maxWidth: .infinity, alignment: .topLeading)
-				}
-				.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-			}
-		}
-		.font(.callout)
-		.padding()
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-		.frame(minHeight: 0)
-		.background {
-			RoundedRectangle(cornerRadius: 8)
-				.fill(.secondary.opacity(0.08))
 		}
 	}
 }
