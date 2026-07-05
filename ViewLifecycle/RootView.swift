@@ -1,23 +1,53 @@
 import SwiftUI
 
 struct RootView: View {
+	#if !os(macOS)
+		@Environment(\.horizontalSizeClass) private var horizontalSizeClass
+	#endif
+
+	var body: some View {
+		#if os(macOS)
+			RegularRootView()
+		#else
+			if self.horizontalSizeClass == .compact {
+				CompactRootView()
+			}
+			else {
+				RegularRootView()
+			}
+		#endif
+	}
+}
+
+struct CompactRootView: View {
+	var body: some View {
+		NavigationStack {
+			Sidebar()
+				.navigationDestination(for: CaseStudy.self) { caseStudy in
+					Detail(caseStudy: caseStudy)
+				}
+		}
+	}
+}
+
+struct RegularRootView: View {
 	@State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State private var selectedCaseStudy: CaseStudy? = nil
 
 	var body: some View {
 		NavigationSplitView(columnVisibility: self.$columnVisibility) {
-			Sidebar(selection: self.$selectedCaseStudy)
+			Sidebar()
+				.navigationDestination(for: CaseStudy.self) { caseStudy in
+					RegularDetail(caseStudy: caseStudy)
+				}
 		} detail: {
-			Detail(caseStudy: self.selectedCaseStudy)
+			Detail(caseStudy: nil)
 		}
 	}
 }
 
 struct Sidebar: View {
-	@Binding var selection: CaseStudy?
-
 	var body: some View {
-		List(selection: self.$selection) {
+		List {
 			ForEach(CaseStudyCategory.all) { category in
 				Section {
 					ForEach(category.caseStudies) { caseStudy in
@@ -74,6 +104,23 @@ struct Detail: View {
 	}
 }
 
+struct RegularDetail: View {
+	let caseStudy: CaseStudy
+
+	var body: some View {
+		switch self.caseStudy {
+		case .navigationStack:
+			CaseStudyNavigationStack()
+				.navigationTitle(self.caseStudy.label)
+				#if !os(macOS)
+					.navigationBarTitleDisplayMode(.inline)
+				#endif
+		default:
+			Detail(caseStudy: self.caseStudy)
+		}
+	}
+}
+
 struct MainContent: View {
 	var caseStudy: CaseStudy
 
@@ -102,11 +149,7 @@ struct MainContent: View {
 		case .lazyVGrid:
 			CaseStudyLazyVGrid()
 		case .navigationStack:
-			#if os(macOS)
-				CaseStudyNavigationStackMac()
-			#else
-				CaseStudyNavigationStack()
-			#endif
+			CaseStudyNavigationStack.Content()
 		case .tabView:
 			CaseStudyTabView()
 		}

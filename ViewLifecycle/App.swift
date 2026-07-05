@@ -6,15 +6,5 @@ struct ViewLifecycleApp: App {
 		WindowGroup {
 			RootView()
 		}
-		#if os(macOS)
-			Window("NavigationStack", id: "navigation-stack") {
-				CaseStudyNavigationStack()
-					.toolbar {
-						ToolbarItem {
-							Color.clear
-						}
-					}
-			}
-		#endif
 	}
 }
