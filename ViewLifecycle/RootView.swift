@@ -61,9 +61,6 @@ struct Sidebar: View {
 			}
 		}
 		.navigationTitle("SwiftUI View Lifecycle")
-		#if !os(macOS)
-			.navigationBarTitleDisplayMode(.inline)
-		#endif
 	}
 }
 
@@ -98,9 +95,6 @@ struct Detail: View {
 			}
 		}
 		.navigationTitle(self.caseStudy?.label ?? "")
-		#if !os(macOS)
-			.navigationBarTitleDisplayMode(.inline)
-		#endif
 	}
 }
 
@@ -112,9 +106,6 @@ struct RegularDetail: View {
 		case .navigationStack:
 			CaseStudyNavigationStack()
 				.navigationTitle(self.caseStudy.label)
-				#if !os(macOS)
-					.navigationBarTitleDisplayMode(.inline)
-				#endif
 		default:
 			Detail(caseStudy: self.caseStudy)
 		}
