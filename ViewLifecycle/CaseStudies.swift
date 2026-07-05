@@ -1,15 +1,21 @@
 import SwiftUI
 
 struct Category: Identifiable {
-	var id: String
-	var label: LocalizedStringKey
-	var elements: [CaseStudy]
+	let id: String
+	let label: String
+	let elements: [CaseStudy]
 }
 
 struct CaseStudy: Identifiable, Equatable {
-	var id: ID
-	var label: LocalizedStringKey
-	var description: LocalizedStringKey?
+	let id: ID
+	let label: String
+	let description: String
+
+	init(id: ID, label: String, description: String = "") {
+		self.id = id
+		self.label = label
+		self.description = description
+	}
 
 	enum ID: CaseIterable {
 		case id

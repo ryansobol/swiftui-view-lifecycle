@@ -27,16 +27,7 @@ struct Sidebar: View {
 				Section {
 					ForEach(section.elements) { caseStudy in
 						NavigationLink(value: caseStudy.id) {
-							VStack(alignment: .leading, spacing: 4) {
-								Text(caseStudy.label)
-									.lineLimit(nil)
-								if let description = caseStudy.description {
-									Text(description)
-										.font(.callout)
-										.foregroundStyle(.secondary)
-										.lineLimit(nil)
-								}
-							}
+							CaseStudyRow(caseStudy: caseStudy)
 						}
 					}
 				} header: {
@@ -48,6 +39,24 @@ struct Sidebar: View {
 		#if !os(macOS)
 			.navigationBarTitleDisplayMode(.inline)
 		#endif
+	}
+}
+
+private struct CaseStudyRow: View {
+	let caseStudy: CaseStudy
+
+	var body: some View {
+		VStack(alignment: .leading, spacing: 4) {
+			Text(self.caseStudy.label)
+				.lineLimit(nil)
+
+			if !self.caseStudy.description.isEmpty {
+				Text(self.caseStudy.description)
+					.font(.callout)
+					.foregroundStyle(.secondary)
+					.lineLimit(nil)
+			}
+		}
 	}
 }
 
