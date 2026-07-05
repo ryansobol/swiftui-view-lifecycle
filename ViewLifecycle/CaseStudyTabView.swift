@@ -31,7 +31,6 @@ struct CaseStudyTabView: View {
 					Label("Tab 4", systemImage: "4.circle")
 				}
 		}
-		.navigationTitle("TabView")
 	}
 }
 

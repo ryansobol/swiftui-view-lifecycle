@@ -23,7 +23,6 @@ struct CaseStudyScrollViewStatic: View {
 
 			LifecycleMonitor(label: "ScrollView bottom")
 		}
-		.navigationTitle("Static ScrollView")
 	}
 }
 

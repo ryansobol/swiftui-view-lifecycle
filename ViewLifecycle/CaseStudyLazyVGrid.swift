@@ -52,7 +52,6 @@ struct CaseStudyLazyVGrid: View {
 			}
 		}
 		.animation(.default, value: self.items)
-		.navigationTitle("LazyVGrid")
 	}
 }
 

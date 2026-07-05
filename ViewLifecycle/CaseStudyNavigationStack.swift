@@ -14,7 +14,6 @@ import SwiftUI
 				}
 			}
 			.padding()
-			.navigationTitle("NavigationStack")
 		}
 	}
 #endif

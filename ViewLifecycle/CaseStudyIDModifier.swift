@@ -20,7 +20,6 @@ struct CaseStudyIDModifier: View {
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 		.padding()
-		.navigationTitle(".id(_:)")
 	}
 }
 

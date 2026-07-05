@@ -34,7 +34,6 @@ struct CaseStudySwitch: View {
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 		.padding()
-		.navigationTitle("switch")
 	}
 }
 

@@ -47,7 +47,6 @@ struct CaseStudyListStatic: View {
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.background(.regularMaterial)
 		}
-		.navigationTitle("Static List")
 	}
 }
 

@@ -19,7 +19,6 @@ struct CaseStudyOpacity: View {
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 		.padding()
-		.navigationTitle("if/else")
 	}
 }
 

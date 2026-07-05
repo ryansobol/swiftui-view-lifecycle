@@ -43,7 +43,6 @@ struct CaseStudyListDynamic: View {
 			}
 		}
 		.animation(.default, value: self.items)
-		.navigationTitle("Dynamic List")
 	}
 }
 

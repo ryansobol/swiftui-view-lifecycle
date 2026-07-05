@@ -2,36 +2,31 @@ import SwiftUI
 
 struct RootView: View {
 	@State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State private var selection: CaseStudy.ID? = nil
+	@State private var selectedCaseStudy: CaseStudy? = nil
 
 	var body: some View {
 		NavigationSplitView(columnVisibility: self.$columnVisibility) {
-			Sidebar(selection: self.$selection)
+			Sidebar(selection: self.$selectedCaseStudy)
 		} detail: {
-			if let selection = self.selection {
-				MainContent(caseStudyID: selection)
-			}
-			else {
-				Text("Select a case study.")
-			}
+			Detail(caseStudy: self.selectedCaseStudy)
 		}
 	}
 }
 
 struct Sidebar: View {
-	@Binding var selection: CaseStudy.ID?
+	@Binding var selection: CaseStudy?
 
 	var body: some View {
 		List(selection: self.$selection) {
-			ForEach(categories) { section in
+			ForEach(CaseStudyCategory.all) { category in
 				Section {
-					ForEach(section.elements) { caseStudy in
-						NavigationLink(value: caseStudy.id) {
+					ForEach(category.caseStudies) { caseStudy in
+						NavigationLink(value: caseStudy) {
 							CaseStudyRow(caseStudy: caseStudy)
 						}
 					}
 				} header: {
-					Text(section.label)
+					Text(category.label)
 				}
 			}
 		}
@@ -60,11 +55,30 @@ private struct CaseStudyRow: View {
 	}
 }
 
-struct MainContent: View {
-	var caseStudyID: CaseStudy.ID
+struct Detail: View {
+	let caseStudy: CaseStudy?
 
 	var body: some View {
-		switch self.caseStudyID {
+		Group {
+			if let caseStudy = self.caseStudy {
+				MainContent(caseStudy: caseStudy)
+			}
+			else {
+				Text("Select a case study.")
+			}
+		}
+		.navigationTitle(self.caseStudy?.label ?? "")
+		#if !os(macOS)
+			.navigationBarTitleDisplayMode(.inline)
+		#endif
+	}
+}
+
+struct MainContent: View {
+	var caseStudy: CaseStudy
+
+	var body: some View {
+		switch self.caseStudy {
 		case .ifElse:
 			CaseStudyIfElse()
 		case .switch:

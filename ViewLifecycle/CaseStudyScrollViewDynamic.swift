@@ -53,7 +53,6 @@ struct CaseStudyScrollViewDynamic: View {
 			}
 		}
 		.animation(.default, value: self.items)
-		.navigationTitle("Dynamic ScrollView")
 	}
 }
 

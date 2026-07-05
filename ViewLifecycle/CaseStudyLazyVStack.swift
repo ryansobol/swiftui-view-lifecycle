@@ -52,7 +52,6 @@ struct CaseStudyLazyVStack: View {
 			}
 		}
 		.animation(.default, value: self.items)
-		.navigationTitle("LazyVStack")
 	}
 }
 

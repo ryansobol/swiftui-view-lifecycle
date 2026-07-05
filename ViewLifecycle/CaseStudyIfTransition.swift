@@ -44,7 +44,6 @@ struct CaseStudyIfTransition: View {
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-		.navigationTitle("if transition")
 	}
 
 	private func togglePanel() -> Void {

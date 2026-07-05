@@ -21,7 +21,6 @@ struct CaseStudyIfElse: View {
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 		.padding()
-		.navigationTitle("if/else")
 	}
 }
 
