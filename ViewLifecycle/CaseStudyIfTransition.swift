@@ -4,7 +4,7 @@ struct CaseStudyIfTransition: View {
 	private static let demonstrationAnimationDuration: TimeInterval = 1.5
 
 	@State private var isShowingPanel = false
-	@State private var events = [TransitionEvent]()
+	@State private var events = [CaseStudyEvent]()
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 16) {
@@ -47,9 +47,14 @@ struct CaseStudyIfTransition: View {
 	}
 
 	private func togglePanel() -> Void {
-		let action: TransitionAction = self.isShowingPanel ? .hide : .show
+		let startedEvent: CaseStudyEvent.Kind = self.isShowingPanel
+			? .transition(.hideStarted)
+			: .transition(.showStarted)
+		let completedEvent: CaseStudyEvent.Kind = self.isShowingPanel
+			? .transition(.hideCompleted)
+			: .transition(.showCompleted)
 
-		self.log(action.startedEvent)
+		self.log(startedEvent)
 
 		if #available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *) {
 			withAnimation(
@@ -58,7 +63,7 @@ struct CaseStudyIfTransition: View {
 			) {
 				self.isShowingPanel.toggle()
 			} completion: {
-				self.log(action.completedEvent)
+				self.log(completedEvent)
 			}
 		}
 		else {
@@ -67,14 +72,14 @@ struct CaseStudyIfTransition: View {
 			}
 
 			DispatchQueue.main.asyncAfter(deadline: .now() + Self.demonstrationAnimationDuration) {
-				self.log(action.completedEvent)
+				self.log(completedEvent)
 			}
 		}
 	}
 
-	private func log(_ kind: TransitionEvent.Kind) -> Void {
-		let event = TransitionEvent(kind: kind, timestamp: .now)
-		print("\(event.timestamp) transition: \(event.kind.logLabel)")
+	private func log(_ kind: CaseStudyEvent.Kind) -> Void {
+		let event = CaseStudyEvent(kind: kind)
+		print("\(event.timestamp) transition: \(event.kind.label)")
 		self.events.append(event)
 	}
 
@@ -86,7 +91,7 @@ struct CaseStudyIfTransition: View {
 private struct TransitionPanel: View {
 	@Environment(\.colorScheme) private var colorScheme
 
-	let log: (TransitionEvent.Kind) -> Void
+	let log: (CaseStudyEvent.Kind) -> Void
 
 	var body: some View {
 		VStack(spacing: 12) {
@@ -110,13 +115,13 @@ private struct TransitionPanel: View {
 				}
 		}
 		.task {
-			self.log(.task)
+			self.log(.lifecycle(.taskStarted))
 		}
 		.onAppear {
-			self.log(.onAppear)
+			self.log(.lifecycle(.viewAppeared))
 		}
 		.onDisappear {
-			self.log(.onDisappear)
+			self.log(.lifecycle(.viewDisappeared))
 		}
 	}
 
@@ -129,7 +134,7 @@ private struct TransitionPanel: View {
 }
 
 private struct EventLog: View {
-	let events: [TransitionEvent]
+	let events: [CaseStudyEvent]
 	let onClear: () -> Void
 
 	var body: some View {
@@ -176,63 +181,6 @@ private struct EventLog: View {
 		.background {
 			RoundedRectangle(cornerRadius: 8)
 				.fill(.secondary.opacity(0.08))
-		}
-	}
-}
-
-private struct TransitionEvent: Identifiable {
-	let id: UUID
-	let kind: Kind
-	let timestamp: Date
-
-	init(kind: Kind, timestamp: Date) {
-		self.id = UUID()
-		self.kind = kind
-		self.timestamp = timestamp
-	}
-
-	enum Kind {
-		case showStarted
-		case showCompleted
-		case hideStarted
-		case hideCompleted
-		case task
-		case onAppear
-		case onDisappear
-
-		var label: LocalizedStringKey {
-			return LocalizedStringKey(self.logLabel)
-		}
-
-		var logLabel: String {
-			return switch self {
-			case .showStarted: "show tapped"
-			case .showCompleted: "show animation completed"
-			case .hideStarted: "hide tapped"
-			case .hideCompleted: "hide animation completed"
-			case .task: "task"
-			case .onAppear: "onAppear"
-			case .onDisappear: "onDisappear"
-			}
-		}
-	}
-}
-
-private enum TransitionAction {
-	case show
-	case hide
-
-	var startedEvent: TransitionEvent.Kind {
-		return switch self {
-		case .show: .showStarted
-		case .hide: .hideStarted
-		}
-	}
-
-	var completedEvent: TransitionEvent.Kind {
-		return switch self {
-		case .show: .showCompleted
-		case .hide: .hideCompleted
 		}
 	}
 }
