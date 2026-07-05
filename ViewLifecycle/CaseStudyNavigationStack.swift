@@ -40,7 +40,7 @@ struct CaseStudyNavigationStack: View {
 				} footer: {
 					if self.level == 1 {
 						Text(
-							"Navigation views keep the state of content views on the navigation stack alive. `onAppear` and `onDisappear` get called as you navigate. Popping a view off the stack ends the view's lifetime, destroying its state."
+							"Navigation views keep the state of content views on the navigation stack alive. `task`, `onAppear`, and `onDisappear` get called as you navigate. Popping a view off the stack ends the view's lifetime, destroying its state."
 						)
 						.font(.callout)
 						.frame(maxWidth: .infinity, alignment: .leading)

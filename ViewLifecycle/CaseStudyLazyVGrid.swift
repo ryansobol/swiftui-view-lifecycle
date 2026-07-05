@@ -28,7 +28,7 @@ struct CaseStudyLazyVGrid: View {
 		}
 		.safeAreaInset(edge: .bottom) {
 			Text(
-				"`LazyVGrid` behaves almost like `List`: `onAppear` gets called often, but the state gets preserved for all child views. Unlike `List`, `onDisappear` seems not to get called at all."
+				"`LazyVGrid` behaves almost like `List`: `task` and `onAppear` get called often, but the state gets preserved for all child views. Unlike `List`, `onDisappear` seems not to get called at all."
 			)
 			.font(.callout)
 			.padding()

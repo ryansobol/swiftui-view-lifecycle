@@ -19,7 +19,7 @@ struct CaseStudyListDynamic: View {
 		}
 		.safeAreaInset(edge: .bottom) {
 			Text(
-				"`List` recycles views during scrolling, so `onAppear` gets called often. But `List` preserves the state for all list items."
+				"`List` recycles views during scrolling, so `task` and `onAppear` get called often. But `List` preserves the state for all list items."
 			)
 			.font(.callout)
 			.padding()

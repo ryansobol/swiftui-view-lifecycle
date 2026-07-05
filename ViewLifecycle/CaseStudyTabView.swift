@@ -6,7 +6,7 @@ struct CaseStudyTabView: View {
 			VStack {
 				LifecycleMonitor(label: "Tab 1")
 				Text(
-					"`TabView` initializes the state for each tab’s content view all at once when it first appears. `onAppear` and `onDisappear` get called as you switch between tabs. State of offscreen tabs is kept alive."
+					"`TabView` initializes the state for each tab’s content view all at once when it first appears. `task`, `onAppear`, and `onDisappear` get called as you switch between tabs. State of offscreen tabs is kept alive."
 				)
 				.font(.callout)
 				.frame(maxWidth: .infinity, alignment: .leading)
