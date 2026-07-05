@@ -14,6 +14,7 @@ struct CaseStudy: Identifiable, Equatable {
 	enum ID: CaseIterable {
 		case id
 		case ifElse
+		case ifTransition
 		case lazyVGrid
 		case lazyVStack
 		case listDynamic
@@ -36,6 +37,11 @@ let categories: [Category] = [
 			CaseStudy(id: .switch, label: "switch"),
 			CaseStudy(id: .id, label: ".id(_:)"),
 			CaseStudy(id: .opacity, label: ".opacity(_:)"),
+			CaseStudy(
+				id: .ifTransition,
+				label: "if transition",
+				description: "A conditionally inserted side panel with a move transition."
+			),
 		]
 	),
 	Category(

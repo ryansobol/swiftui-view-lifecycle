@@ -10,7 +10,8 @@ struct RootView: View {
 		} detail: {
 			if let selection = self.selection {
 				MainContent(caseStudyID: selection)
-			} else {
+			}
+			else {
 				Text("Select a case study.")
 			}
 		}
@@ -63,6 +64,8 @@ struct MainContent: View {
 			CaseStudyIDModifier()
 		case .opacity:
 			CaseStudyOpacity()
+		case .ifTransition:
+			CaseStudyIfTransition()
 		case .scrollViewStatic:
 			CaseStudyScrollViewStatic()
 		case .scrollViewDynamic:
