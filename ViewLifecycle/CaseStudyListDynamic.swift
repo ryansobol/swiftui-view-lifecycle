@@ -46,10 +46,8 @@ struct CaseStudyListDynamic: View {
 	}
 }
 
-struct CaseStudyList_Previews: PreviewProvider {
-	static var previews: some View {
-		NavigationStack {
-			CaseStudyListDynamic()
-		}
+#Preview {
+	NavigationStack {
+		CaseStudyListDynamic()
 	}
 }

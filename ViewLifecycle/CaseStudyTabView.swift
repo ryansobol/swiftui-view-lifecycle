@@ -34,8 +34,6 @@ struct CaseStudyTabView: View {
 	}
 }
 
-struct CaseStudyTabView_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyTabView()
-	}
+#Preview {
+	CaseStudyTabView()
 }

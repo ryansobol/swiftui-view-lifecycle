@@ -23,8 +23,6 @@ struct CaseStudyIDModifier: View {
 	}
 }
 
-struct CaseStudyIDModifier_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyIDModifier()
-	}
+#Preview {
+	CaseStudyIDModifier()
 }

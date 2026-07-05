@@ -22,8 +22,6 @@ struct CaseStudyOpacity: View {
 	}
 }
 
-struct CaseStudyOpacity_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyOpacity()
-	}
+#Preview {
+	CaseStudyOpacity()
 }

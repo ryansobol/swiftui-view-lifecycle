@@ -55,8 +55,6 @@ struct CaseStudyLazyVGrid: View {
 	}
 }
 
-struct CaseStudyLazyVGrid_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyLazyVGrid()
-	}
+#Preview {
+	CaseStudyLazyVGrid()
 }

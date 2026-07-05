@@ -156,8 +156,6 @@ struct MainContent: View {
 	}
 }
 
-struct RootView_Previews: PreviewProvider {
-	static var previews: some View {
-		RootView()
-	}
+#Preview {
+	RootView()
 }

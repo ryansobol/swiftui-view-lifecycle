@@ -26,8 +26,6 @@ struct CaseStudyScrollViewStatic: View {
 	}
 }
 
-struct CaseStudyScrollView_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyScrollViewStatic()
-	}
+#Preview {
+	CaseStudyScrollViewStatic()
 }

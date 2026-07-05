@@ -56,10 +56,8 @@ struct CaseStudyScrollViewDynamic: View {
 	}
 }
 
-struct CaseStudyScrollViewVStackForEach_Previews: PreviewProvider {
-	static var previews: some View {
-		NavigationStack {
-			CaseStudyScrollViewDynamic()
-		}
+#Preview {
+	NavigationStack {
+		CaseStudyScrollViewDynamic()
 	}
 }

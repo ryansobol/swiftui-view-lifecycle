@@ -37,8 +37,6 @@ struct CaseStudySwitch: View {
 	}
 }
 
-struct CaseStudySwitch_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudySwitch()
-	}
+#Preview {
+	CaseStudySwitch()
 }

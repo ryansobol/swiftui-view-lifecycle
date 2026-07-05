@@ -55,8 +55,6 @@ extension CaseStudyNavigationStack {
 	}
 }
 
-struct CaseStudyNavigationStack_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyNavigationStack()
-	}
+#Preview {
+	CaseStudyNavigationStack()
 }

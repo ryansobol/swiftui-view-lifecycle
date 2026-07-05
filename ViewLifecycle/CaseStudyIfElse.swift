@@ -24,8 +24,6 @@ struct CaseStudyIfElse: View {
 	}
 }
 
-struct CaseStudyIfElse_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyIfElse()
-	}
+#Preview {
+	CaseStudyIfElse()
 }

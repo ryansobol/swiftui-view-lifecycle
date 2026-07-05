@@ -55,8 +55,6 @@ struct CaseStudyLazyVStack: View {
 	}
 }
 
-struct CaseStudyLazyVStack_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyLazyVStack()
-	}
+#Preview {
+	CaseStudyLazyVStack()
 }

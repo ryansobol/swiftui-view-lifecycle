@@ -50,8 +50,6 @@ struct CaseStudyListStatic: View {
 	}
 }
 
-struct CaseStudyStaticList_Previews: PreviewProvider {
-	static var previews: some View {
-		CaseStudyListStatic()
-	}
+#Preview {
+	CaseStudyListStatic()
 }

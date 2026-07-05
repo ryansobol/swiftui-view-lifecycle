@@ -92,12 +92,10 @@ struct LifecycleMonitor: View {
 	}
 }
 
-struct LifecycleMonitor_Previews: PreviewProvider {
-	static var previews: some View {
-		List {
-			ForEach(1 ..< 100) { i in
-				LifecycleMonitor(label: "\(i)")
-			}
+#Preview {
+	List {
+		ForEach(1 ..< 100) { i in
+			LifecycleMonitor(label: "\(i)")
 		}
 	}
 }
