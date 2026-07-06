@@ -1,3 +1,4 @@
+import OSLog
 import SwiftUI
 
 struct CaseStudyIfTransition: View {
@@ -77,7 +78,7 @@ struct CaseStudyIfTransition: View {
 
 	private func log(_ kind: CaseStudyEvent.Kind) -> Void {
 		let event = CaseStudyEvent(kind: kind)
-		print("\(event.timestamp) transition: \(event.kind.label)")
+		Logger.caseStudyIfTransition.info("\(event.kind.label, privacy: .public)")
 		self.events.append(event)
 	}
 }

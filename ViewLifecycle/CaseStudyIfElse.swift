@@ -1,3 +1,4 @@
+import OSLog
 import SwiftUI
 
 struct CaseStudyIfElse: View {
@@ -35,7 +36,7 @@ struct CaseStudyIfElse: View {
 
 	private func log(_ kind: CaseStudyEvent.Kind) -> Void {
 		let event = CaseStudyEvent(kind: kind)
-		print("\(event.timestamp) if/else: \(event.kind.label)")
+		Logger.caseStudyIfElse.info("\(event.kind.label, privacy: .public)")
 		self.events.append(event)
 	}
 }
