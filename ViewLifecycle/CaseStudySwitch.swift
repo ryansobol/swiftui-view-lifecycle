@@ -1,39 +1,44 @@
 import SwiftUI
 
-enum Cases {
-	case one
-	case two
-	case three
+private enum SwitchCase: String, CaseIterable, Identifiable {
+	case one = "One"
+	case two = "Two"
+	case three = "Three"
+
+	var id: Self {
+		return self
+	}
 }
 
 struct CaseStudySwitch: View {
-	@State private var state: Cases = .one
+	@State private var selectedCase: SwitchCase = .one
 
 	var body: some View {
-		VStack {
-			Picker("Selection", selection: self.$state) {
-				Text("One").tag(Cases.one)
-				Text("Two").tag(Cases.two)
-				Text("Three").tag(Cases.three)
+		TimelineCaseStudy(
+			caseStudy: .switch,
+			explanation: "Selecting a segment activates a different `switch` branch. The event log shows each branch getting its own state and lifecycle events. Returning to a case creates fresh state for that branch instead of reusing the previous instance."
+		) { recordEntry in
+			Picker("Selection", selection: self.$selectedCase) {
+				ForEach(SwitchCase.allCases) { switchCase in
+					Text(switchCase.rawValue).tag(switchCase)
+				}
 			}
 			.pickerStyle(.segmented)
-
-			switch self.state {
-			case .one:
-				LifecycleMonitor(label: "One")
-			case .two:
-				LifecycleMonitor(label: "Two")
-			case .three:
-				LifecycleMonitor(label: "Three")
+			.onChange(of: self.selectedCase) { _, newValue in
+				recordEntry(TimelineEntry(event: .action(.selected(newValue.rawValue))))
 			}
 
-			Text(
-				"A `switch` statement behaves like a series of `if`/`else` branches. Content views are fully destroyed and recreated as you switch between states."
-			)
-			.font(.callout)
-			.frame(maxWidth: .infinity, alignment: .leading)
+			switch self.selectedCase {
+			case .one:
+				LifecycleMonitor(label: SwitchCase.one.rawValue, recordEntry: recordEntry)
+
+			case .two:
+				LifecycleMonitor(label: SwitchCase.two.rawValue, recordEntry: recordEntry)
+
+			case .three:
+				LifecycleMonitor(label: SwitchCase.three.rawValue, recordEntry: recordEntry)
+			}
 		}
-		.padding()
 	}
 }
 
