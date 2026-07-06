@@ -1,24 +1,34 @@
 import SwiftUI
 
-struct ElapsedTimerText: View {
+struct TimelineEntryAge: View {
 	enum Style {
 		case relative
 		case standalone
 	}
 
-	let start: Date
+	let entry: TimelineEntry?
 	let style: Style
+	let placeholder: String
 
-	init(since start: Date, style: Style = .standalone) {
-		self.start = start
+	init(entry: TimelineEntry?, style: Style = .standalone, placeholder: String = "never") {
+		self.entry = entry
 		self.style = style
+		self.placeholder = placeholder
 	}
 
 	var body: some View {
 		TimelineView(.periodic(from: .now, by: 1)) { timeline in
-			Text(Self.label(since: self.start, now: timeline.date, style: self.style))
+			Text(self.label(now: timeline.date))
 				.monospacedDigit()
 		}
+	}
+
+	private func label(now: Date) -> String {
+		guard let entry = self.entry else {
+			return self.placeholder
+		}
+
+		return Self.label(since: entry.timestamp, now: now, style: self.style)
 	}
 
 	private static func label(since start: Date, now: Date, style: Style) -> String {

@@ -3,10 +3,12 @@ import SwiftUI
 /// A view that records and displays its lifecycle events.
 struct LifecycleMonitor: View {
 	var label: String
-	@State private var stateTimestamp: Date = .now
-	@State private var taskStartTimestamp: Date? = nil
-	@State private var onAppearTimestamp: Date? = nil
-	@State private var onDisappearTimestamp: Date? = nil
+	var recordEntry: (TimelineEntry) -> Void = { _ in }
+
+	@State private var stateCreatedEntry: TimelineEntry? = nil
+	@State private var taskStartedEntry: TimelineEntry? = nil
+	@State private var onAppearEntry: TimelineEntry? = nil
+	@State private var onDisappearEntry: TimelineEntry? = nil
 	@State private var color: Color = LifecycleMonitorColors.next()
 
 	var body: some View {
@@ -17,26 +19,26 @@ struct LifecycleMonitor: View {
 				GridRow(alignment: .firstTextBaseline) {
 					Text("@State")
 						.gridColumnAlignment(.leading)
-					ElapsedTimerText(since: self.stateTimestamp, style: .relative)
+					TimelineEntryAge(entry: self.stateCreatedEntry, style: .relative)
 						.gridColumnAlignment(.leading)
 				}
 				.help("When the state (incl. @State and @StateObject) for this view was created")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("task")
-					LifecycleTimestampText(timestamp: self.taskStartTimestamp)
+					TimelineEntryAge(entry: self.taskStartedEntry, style: .relative)
 				}
 				.help("When task was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onAppear")
-					LifecycleTimestampText(timestamp: self.onAppearTimestamp)
+					TimelineEntryAge(entry: self.onAppearEntry, style: .relative)
 				}
 				.help("When onAppear was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onDisappear")
-					LifecycleTimestampText(timestamp: self.onDisappearTimestamp)
+					TimelineEntryAge(entry: self.onDisappearEntry, style: .relative)
 				}
 				.help("When onDisappear was last called for this view")
 			}
@@ -53,42 +55,45 @@ struct LifecycleMonitor: View {
 				}
 		}
 		.task {
-			let timestamp = Date.now
-			print("\(timestamp) \(self.label): task started")
-			let animation: Animation? = self.taskStartTimestamp == nil ? nil : .easeOut(duration: 1)
+			self.recordStateCreatedEntryIfNeeded()
+			let entry = self.record(.taskStarted(self.label))
+			print("\(entry.timestamp) \(self.label): task started")
+			let animation: Animation? = self.taskStartedEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
-				self.taskStartTimestamp = timestamp
+				self.taskStartedEntry = entry
 			}
 		}
 		.onAppear {
-			let timestamp = Date.now
-			print("\(timestamp) \(self.label): onAppear")
-			let animation: Animation? = self.onAppearTimestamp == nil ? nil : .easeOut(duration: 1)
+			self.recordStateCreatedEntryIfNeeded()
+			let entry = self.record(.viewAppeared(self.label))
+			print("\(entry.timestamp) \(self.label): view appeared")
+			let animation: Animation? = self.onAppearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
-				self.onAppearTimestamp = timestamp
+				self.onAppearEntry = entry
 			}
 		}
 		.onDisappear {
-			let timestamp = Date.now
-			print("\(timestamp) \(self.label): onDisappear")
-			let animation: Animation? = self.onDisappearTimestamp == nil ? nil : .easeOut(duration: 1)
+			self.recordStateCreatedEntryIfNeeded()
+			let entry = self.record(.viewDisappeared(self.label))
+			print("\(entry.timestamp) \(self.label): view disappeared")
+			let animation: Animation? = self.onDisappearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
-				self.onDisappearTimestamp = timestamp
+				self.onDisappearEntry = entry
 			}
 		}
 	}
-}
 
-private struct LifecycleTimestampText: View {
-	let timestamp: Date?
+	private func recordStateCreatedEntryIfNeeded() -> Void {
+		guard self.stateCreatedEntry == nil else { return }
+		let entry = TimelineEntry(event: .lifecycle(.stateCreated(self.label)))
+		self.stateCreatedEntry = entry
+		self.recordEntry(entry)
+	}
 
-	var body: some View {
-		if let timestamp {
-			ElapsedTimerText(since: timestamp, style: .relative)
-		}
-		else {
-			Text("never")
-		}
+	private func record(_ lifecycle: TimelineEntry.Event.Lifecycle) -> TimelineEntry {
+		let entry = TimelineEntry(event: .lifecycle(lifecycle))
+		self.recordEntry(entry)
+		return entry
 	}
 }
 

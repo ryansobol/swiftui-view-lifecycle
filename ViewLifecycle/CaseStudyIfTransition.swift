@@ -9,7 +9,8 @@ struct CaseStudyIfTransition: View {
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 16) {
-			Button(self.isShowingPanel ? "Hide panel" : "Show panel") {
+			Button(self.panelButtonLabel) {
+				self.record(.action(.tapped(self.panelButtonLabel)))
 				self.togglePanel()
 			}
 			.buttonStyle(.glassProminent)
@@ -23,7 +24,7 @@ struct CaseStudyIfTransition: View {
 					}
 
 				if self.isShowingPanel {
-					TransitionPanel(log: self.log)
+					TransitionPanel(recordEntry: self.record)
 						.frame(width: 280)
 						.transition(.move(edge: .leading))
 						.zIndex(1)
@@ -45,6 +46,10 @@ struct CaseStudyIfTransition: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 	}
 
+	private var panelButtonLabel: String {
+		return self.isShowingPanel ? "Hide panel" : "Show panel"
+	}
+
 	private func togglePanel() -> Void {
 		let startedEvent: TimelineEntry.Event = self.isShowingPanel
 			? .transition(.hideStarted)
@@ -53,7 +58,7 @@ struct CaseStudyIfTransition: View {
 			? .transition(.hideCompleted)
 			: .transition(.showCompleted)
 
-		self.log(startedEvent)
+		self.record(startedEvent)
 
 		if #available(macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0, *) {
 			withAnimation(
@@ -62,7 +67,7 @@ struct CaseStudyIfTransition: View {
 			) {
 				self.isShowingPanel.toggle()
 			} completion: {
-				self.log(completedEvent)
+				self.record(completedEvent)
 			}
 		}
 		else {
@@ -71,42 +76,37 @@ struct CaseStudyIfTransition: View {
 			}
 
 			DispatchQueue.main.asyncAfter(deadline: .now() + Self.demonstrationAnimationDuration) {
-				self.log(completedEvent)
+				self.record(completedEvent)
 			}
 		}
 	}
 
-	private func log(_ event: TimelineEntry.Event) -> Void {
+	private func record(_ event: TimelineEntry.Event) -> Void {
 		let entry = TimelineEntry(event: event)
+		self.record(entry)
+	}
+
+	private func record(_ entry: TimelineEntry) -> Void {
 		Logger.caseStudyIfTransition.info("\(entry.event.label, privacy: .public)")
 		self.entries.append(entry)
 	}
 }
 
 private struct TransitionPanel: View {
-	let log: (TimelineEntry.Event) -> Void
+	let recordEntry: (TimelineEntry) -> Void
 
 	var body: some View {
 		VStack(spacing: 12) {
 			Text("Panel")
 				.font(.headline)
 
-			LifecycleMonitor(label: "Transition panel")
+			LifecycleMonitor(label: "Panel", recordEntry: self.recordEntry)
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.background {
 			RoundedRectangle(cornerRadius: 8)
 				.fill(Color.gray100)
-		}
-		.task {
-			self.log(.lifecycle(.taskStarted))
-		}
-		.onAppear {
-			self.log(.lifecycle(.viewAppeared))
-		}
-		.onDisappear {
-			self.log(.lifecycle(.viewDisappeared))
 		}
 	}
 }

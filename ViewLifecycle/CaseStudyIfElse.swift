@@ -11,14 +11,14 @@ struct CaseStudyIfElse: View {
 				Text("if/else toggle")
 			}
 			.onChange(of: self.flag) { _, newValue in
-				self.log(.action(.toggled(isOn: newValue)))
+				self.record(.action(.toggled(isOn: newValue)))
 			}
 
 			if self.flag {
-				LoggedLifecycleMonitor(label: "on", log: self.log)
+				LifecycleMonitor(label: "on", recordEntry: self.record)
 			}
 			else {
-				LoggedLifecycleMonitor(label: "off", log: self.log)
+				LifecycleMonitor(label: "off", recordEntry: self.record)
 			}
 
 			EventLog(entries: self.$entries)
@@ -34,28 +34,14 @@ struct CaseStudyIfElse: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 	}
 
-	private func log(_ event: TimelineEntry.Event) -> Void {
+	private func record(_ event: TimelineEntry.Event) -> Void {
 		let entry = TimelineEntry(event: event)
+		self.record(entry)
+	}
+
+	private func record(_ entry: TimelineEntry) -> Void {
 		Logger.caseStudyIfElse.info("\(entry.event.label, privacy: .public)")
 		self.entries.append(entry)
-	}
-}
-
-private struct LoggedLifecycleMonitor: View {
-	let label: String
-	let log: (TimelineEntry.Event) -> Void
-
-	var body: some View {
-		LifecycleMonitor(label: self.label)
-			.task {
-				self.log(.lifecycle(.taskStarted))
-			}
-			.onAppear {
-				self.log(.lifecycle(.viewAppeared))
-			}
-			.onDisappear {
-				self.log(.lifecycle(.viewDisappeared))
-			}
 	}
 }
 

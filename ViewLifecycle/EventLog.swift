@@ -86,7 +86,7 @@ private struct EventLogRow: View {
 
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			ElapsedTimerText(since: self.entry.timestamp)
+			TimelineEntryAge(entry: self.entry)
 				.foregroundStyle(Color.gray600)
 				.frame(width: 56, alignment: .leading)
 
@@ -164,8 +164,9 @@ private struct EventLogPreview: View {
 	private static var initialEntries: [TimelineEntry] {
 		return [
 			.init(timestamp: .now.addingTimeInterval(-8), event: .transition(.showStarted)),
-			.init(timestamp: .now.addingTimeInterval(-6), event: .lifecycle(.taskStarted)),
-			.init(timestamp: .now.addingTimeInterval(-4), event: .lifecycle(.viewAppeared)),
+			.init(timestamp: .now.addingTimeInterval(-6), event: .lifecycle(.stateCreated("Panel"))),
+			.init(timestamp: .now.addingTimeInterval(-5), event: .lifecycle(.taskStarted("Panel"))),
+			.init(timestamp: .now.addingTimeInterval(-4), event: .lifecycle(.viewAppeared("Panel"))),
 			.init(timestamp: .now.addingTimeInterval(-2), event: .transition(.showCompleted)),
 		]
 	}
@@ -173,12 +174,13 @@ private struct EventLogPreview: View {
 	private static let sampleEvents: [TimelineEntry.Event] = [
 		.action(.tapped("Show panel")),
 		.transition(.showStarted),
-		.lifecycle(.taskStarted),
-		.lifecycle(.viewAppeared),
+		.lifecycle(.stateCreated("Panel")),
+		.lifecycle(.taskStarted("Panel")),
+		.lifecycle(.viewAppeared("Panel")),
 		.transition(.showCompleted),
 		.action(.tapped("Hide panel")),
 		.transition(.hideStarted),
-		.lifecycle(.viewDisappeared),
+		.lifecycle(.viewDisappeared("Panel")),
 		.transition(.hideCompleted),
 	]
 }

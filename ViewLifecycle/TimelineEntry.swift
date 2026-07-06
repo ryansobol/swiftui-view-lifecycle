@@ -25,10 +25,10 @@ struct TimelineEntry: Identifiable {
 		}
 
 		enum Lifecycle {
-			case stateCreated
-			case taskStarted
-			case viewAppeared
-			case viewDisappeared
+			case stateCreated(String)
+			case taskStarted(String)
+			case viewAppeared(String)
+			case viewDisappeared(String)
 		}
 
 		enum Transition {
@@ -49,10 +49,10 @@ extension TimelineEntry.Event {
 		case let .action(.selected(label)): "\(label) selected"
 		case let .action(.tapped(label)): "\(label) tapped"
 		case let .action(.toggled(isOn)): isOn ? "toggled on" : "toggled off"
-		case .lifecycle(.stateCreated): "state created"
-		case .lifecycle(.taskStarted): "task started"
-		case .lifecycle(.viewAppeared): "view appeared"
-		case .lifecycle(.viewDisappeared): "view disappeared"
+		case let .lifecycle(.stateCreated(label)): "\(label) state created"
+		case let .lifecycle(.taskStarted(label)): "\(label) task started"
+		case let .lifecycle(.viewAppeared(label)): "\(label) view appeared"
+		case let .lifecycle(.viewDisappeared(label)): "\(label) view disappeared"
 		case .transition(.hideCompleted): "hide transition completed"
 		case .transition(.hideStarted): "hide transition started"
 		case .transition(.showCompleted): "show transition completed"
