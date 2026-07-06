@@ -1,24 +1,31 @@
 import SwiftUI
 
 struct CaseStudyOpacity: View {
-	@State private var opacity: Double = 1.0
+	@State private var opacity = 1.0
 
 	var body: some View {
-		VStack {
+		TimelineCaseStudy(
+			caseStudy: .opacity,
+			explanation: "Changing `.opacity(_:)` adjusts how visible the lifecycle monitor is, but it does not change the monitor's identity. The event log shows opacity adjustments without new state, appearance, or disappearance events."
+		) { recordEntry in
 			LabeledContent {
 				Slider(value: self.$opacity, in: 0 ... 1)
+					.onChange(of: self.opacity) {
+						recordEntry(
+							TimelineEntry(event: .action(.adjusted("Opacity \(self.opacityPercentage)")))
+						)
+					}
 			} label: {
-				Text("Opacity: \(self.opacity, format: .percent.precision(.fractionLength(0)))")
+				Text("Opacity: \(self.opacityPercentage)")
 			}
-			LifecycleMonitor(label: ".opacity(_:)")
+
+			LifecycleMonitor(label: ".opacity(\(self.opacityPercentage))", recordEntry: recordEntry)
 				.opacity(self.opacity)
-			Text(
-				"The `.opacity` modifier has no effect on a view’s lifecycle. Setting the opacity to 0 does *not* call `onDisappear`."
-			)
-			.font(.callout)
-			.frame(maxWidth: .infinity, alignment: .leading)
 		}
-		.padding()
+	}
+
+	private var opacityPercentage: String {
+		return self.opacity.formatted(.percent.precision(.fractionLength(0)))
 	}
 }
 

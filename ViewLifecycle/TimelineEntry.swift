@@ -16,6 +16,7 @@ struct TimelineEntry: Identifiable {
 		case transition(Transition)
 
 		enum Action {
+			case adjusted(String)
 			case deleted(String)
 			case inserted(String)
 			case navigated(String)
@@ -43,6 +44,7 @@ struct TimelineEntry: Identifiable {
 extension TimelineEntry.Event {
 	var label: String {
 		return switch self {
+		case let .action(.adjusted(label)): "\(label) adjusted"
 		case let .action(.deleted(label)): "\(label) deleted"
 		case let .action(.inserted(label)): "\(label) inserted"
 		case let .action(.navigated(label)): "\(label) navigated"
