@@ -17,30 +17,26 @@ struct LifecycleMonitor: View {
 				GridRow(alignment: .firstTextBaseline) {
 					Text("@State")
 						.gridColumnAlignment(.leading)
-					Text("\(self.stateTimestamp, style: .timer) ago")
-						.monospacedDigit()
+					ElapsedTimerText(since: self.stateTimestamp, style: .relative)
 						.gridColumnAlignment(.leading)
 				}
 				.help("When the state (incl. @State and @StateObject) for this view was created")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("task")
-					Text(self.timestampLabel(for: self.taskStartTimestamp))
-						.monospacedDigit()
+					LifecycleTimestampText(timestamp: self.taskStartTimestamp)
 				}
 				.help("When task was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onAppear")
-					Text(self.timestampLabel(for: self.onAppearTimestamp))
-						.monospacedDigit()
+					LifecycleTimestampText(timestamp: self.onAppearTimestamp)
 				}
 				.help("When onAppear was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onDisappear")
-					Text(self.timestampLabel(for: self.onDisappearTimestamp))
-						.monospacedDigit()
+					LifecycleTimestampText(timestamp: self.onDisappearTimestamp)
 				}
 				.help("When onDisappear was last called for this view")
 			}
@@ -81,13 +77,17 @@ struct LifecycleMonitor: View {
 			}
 		}
 	}
+}
 
-	private func timestampLabel(for timestamp: Date?) -> LocalizedStringKey {
-		if let t = timestamp {
-			return "\(t, style: .timer) ago"
+private struct LifecycleTimestampText: View {
+	let timestamp: Date?
+
+	var body: some View {
+		if let timestamp {
+			ElapsedTimerText(since: timestamp, style: .relative)
 		}
 		else {
-			return "never"
+			Text("never")
 		}
 	}
 }

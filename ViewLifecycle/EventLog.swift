@@ -86,8 +86,7 @@ private struct EventLogRow: View {
 
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			Text(self.event.timestamp, style: .timer)
-				.monospacedDigit()
+			ElapsedTimerText(since: self.event.timestamp)
 				.foregroundStyle(Color.gray600)
 				.frame(width: 56, alignment: .leading)
 
