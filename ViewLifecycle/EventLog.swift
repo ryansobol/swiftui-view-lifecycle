@@ -1,16 +1,16 @@
 import SwiftUI
 
 struct EventLog: View {
-	@Binding var events: [CaseStudyEvent]
+	@Binding var entries: [TimelineEntry]
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
 			EventLogHeader(
-				isClearDisabled: self.events.isEmpty,
-				onClear: self.clearEvents
+				isClearDisabled: self.entries.isEmpty,
+				onClear: self.clearEntries
 			)
 
-			EventLogContent(events: self.events)
+			EventLogContent(entries: self.entries)
 		}
 		.font(.callout)
 		.padding()
@@ -19,8 +19,8 @@ struct EventLog: View {
 		.containerShape(.rect(cornerRadius: 8))
 	}
 
-	private func clearEvents() -> Void {
-		self.events.removeAll()
+	private func clearEntries() -> Void {
+		self.entries.removeAll()
 	}
 }
 
@@ -45,15 +45,15 @@ private struct EventLogHeader: View {
 }
 
 private struct EventLogContent: View {
-	let events: [CaseStudyEvent]
+	let entries: [TimelineEntry]
 
 	var body: some View {
 		Group {
-			if self.events.isEmpty {
+			if self.entries.isEmpty {
 				EventLogEmptyState()
 			}
 			else {
-				EventLogEntries(events: self.events)
+				EventLogEntries(entries: self.entries)
 			}
 		}
 	}
@@ -67,49 +67,49 @@ private struct EventLogEmptyState: View {
 }
 
 private struct EventLogEntries: View {
-	let events: [CaseStudyEvent]
+	let entries: [TimelineEntry]
 
 	var body: some View {
 		ScrollView {
 			LazyVStack(alignment: .leading, spacing: 2) {
-				ForEach(self.events) { event in
-					EventLogRow(event: event)
+				ForEach(self.entries) { entry in
+					EventLogRow(entry: entry)
 				}
 			}
 		}
-		.scrollIndicatorsFlash(trigger: self.events.count)
+		.scrollIndicatorsFlash(trigger: self.entries.count)
 	}
 }
 
 private struct EventLogRow: View {
-	let event: CaseStudyEvent
+	let entry: TimelineEntry
 
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			ElapsedTimerText(since: self.event.timestamp)
+			ElapsedTimerText(since: self.entry.timestamp)
 				.foregroundStyle(Color.gray600)
 				.frame(width: 56, alignment: .leading)
 
-			Text(self.event.kind.label)
-				.foregroundStyle(self.foregroundStyle(for: self.event.kind))
+			Text(self.entry.event.label)
+				.foregroundStyle(self.foregroundStyle(for: self.entry.event))
 		}
 		.padding(.horizontal, 4)
 		.padding(.vertical, 2)
 		.frame(maxWidth: .infinity, alignment: .leading)
-		.background(self.backgroundStyle(for: self.event.kind), in: .rect(corners: .concentric))
+		.background(self.backgroundStyle(for: self.entry.event), in: .rect(corners: .concentric))
 		.containerShape(.rect(cornerRadius: 4))
 	}
 
-	private func backgroundStyle(for kind: CaseStudyEvent.Kind) -> Color.Shade {
-		return switch kind {
+	private func backgroundStyle(for event: TimelineEntry.Event) -> Color.Shade {
+		return switch event {
 		case .action: Color.green50
 		case .lifecycle: Color.blue50
 		case .transition: Color.purple50
 		}
 	}
 
-	private func foregroundStyle(for kind: CaseStudyEvent.Kind) -> Color.Shade {
-		return switch kind {
+	private func foregroundStyle(for event: TimelineEntry.Event) -> Color.Shade {
+		return switch event {
 		case .action: Color.green950
 		case .lifecycle: Color.blue950
 		case .transition: Color.purple950
@@ -124,7 +124,7 @@ private struct EventLogRow: View {
 }
 
 private struct EventLogPreview: View {
-	@State private var events = Self.initialEvents
+	@State private var entries = Self.initialEntries
 	@State private var nextEventIndex = 0
 
 	var body: some View {
@@ -140,37 +140,37 @@ private struct EventLogPreview: View {
 					.buttonStyle(.glass)
 			}
 
-			EventLog(events: self.$events)
+			EventLog(entries: self.$entries)
 				.layoutPriority(1)
 		}
 	}
 
 	private func addEvent() -> Void {
-		self.events.append(CaseStudyEvent(kind: Self.sampleKinds[self.nextEventIndex]))
-		self.nextEventIndex = (self.nextEventIndex + 1) % Self.sampleKinds.count
+		self.entries.append(TimelineEntry(event: Self.sampleEvents[self.nextEventIndex]))
+		self.nextEventIndex = (self.nextEventIndex + 1) % Self.sampleEvents.count
 	}
 
 	private func addSequence() -> Void {
-		for kind in Self.sampleKinds {
-			self.events.append(CaseStudyEvent(kind: kind))
+		for event in Self.sampleEvents {
+			self.entries.append(TimelineEntry(event: event))
 		}
 	}
 
 	private func resetEvents() -> Void {
-		self.events = Self.initialEvents
+		self.entries = Self.initialEntries
 		self.nextEventIndex = 0
 	}
 
-	private static var initialEvents: [CaseStudyEvent] {
+	private static var initialEntries: [TimelineEntry] {
 		return [
-			.init(timestamp: .now.addingTimeInterval(-8), kind: .transition(.showStarted)),
-			.init(timestamp: .now.addingTimeInterval(-6), kind: .lifecycle(.taskStarted)),
-			.init(timestamp: .now.addingTimeInterval(-4), kind: .lifecycle(.viewAppeared)),
-			.init(timestamp: .now.addingTimeInterval(-2), kind: .transition(.showCompleted)),
+			.init(timestamp: .now.addingTimeInterval(-8), event: .transition(.showStarted)),
+			.init(timestamp: .now.addingTimeInterval(-6), event: .lifecycle(.taskStarted)),
+			.init(timestamp: .now.addingTimeInterval(-4), event: .lifecycle(.viewAppeared)),
+			.init(timestamp: .now.addingTimeInterval(-2), event: .transition(.showCompleted)),
 		]
 	}
 
-	private static let sampleKinds: [CaseStudyEvent.Kind] = [
+	private static let sampleEvents: [TimelineEntry.Event] = [
 		.action(.tapped("Show panel")),
 		.transition(.showStarted),
 		.lifecycle(.taskStarted),

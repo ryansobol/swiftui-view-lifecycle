@@ -2,7 +2,7 @@ import OSLog
 import SwiftUI
 
 struct CaseStudyIfElse: View {
-	@State private var events = [CaseStudyEvent]()
+	@State private var entries = [TimelineEntry]()
 	@State private var flag = true
 
 	var body: some View {
@@ -21,7 +21,7 @@ struct CaseStudyIfElse: View {
 				LoggedLifecycleMonitor(label: "off", log: self.log)
 			}
 
-			EventLog(events: self.$events)
+			EventLog(entries: self.$entries)
 				.layoutPriority(1)
 
 			Text(
@@ -34,16 +34,16 @@ struct CaseStudyIfElse: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 	}
 
-	private func log(_ kind: CaseStudyEvent.Kind) -> Void {
-		let event = CaseStudyEvent(kind: kind)
-		Logger.caseStudyIfElse.info("\(event.kind.label, privacy: .public)")
-		self.events.append(event)
+	private func log(_ event: TimelineEntry.Event) -> Void {
+		let entry = TimelineEntry(event: event)
+		Logger.caseStudyIfElse.info("\(entry.event.label, privacy: .public)")
+		self.entries.append(entry)
 	}
 }
 
 private struct LoggedLifecycleMonitor: View {
 	let label: String
-	let log: (CaseStudyEvent.Kind) -> Void
+	let log: (TimelineEntry.Event) -> Void
 
 	var body: some View {
 		LifecycleMonitor(label: self.label)

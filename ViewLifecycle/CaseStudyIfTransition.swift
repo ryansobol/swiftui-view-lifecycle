@@ -5,7 +5,7 @@ struct CaseStudyIfTransition: View {
 	private static let demonstrationAnimationDuration: TimeInterval = 0.75
 
 	@State private var isShowingPanel = false
-	@State private var events = [CaseStudyEvent]()
+	@State private var entries = [TimelineEntry]()
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 16) {
@@ -32,7 +32,7 @@ struct CaseStudyIfTransition: View {
 			.frame(height: 220)
 			.clipped()
 
-			EventLog(events: self.$events)
+			EventLog(entries: self.$entries)
 				.layoutPriority(1)
 
 			Text(
@@ -46,10 +46,10 @@ struct CaseStudyIfTransition: View {
 	}
 
 	private func togglePanel() -> Void {
-		let startedEvent: CaseStudyEvent.Kind = self.isShowingPanel
+		let startedEvent: TimelineEntry.Event = self.isShowingPanel
 			? .transition(.hideStarted)
 			: .transition(.showStarted)
-		let completedEvent: CaseStudyEvent.Kind = self.isShowingPanel
+		let completedEvent: TimelineEntry.Event = self.isShowingPanel
 			? .transition(.hideCompleted)
 			: .transition(.showCompleted)
 
@@ -76,15 +76,15 @@ struct CaseStudyIfTransition: View {
 		}
 	}
 
-	private func log(_ kind: CaseStudyEvent.Kind) -> Void {
-		let event = CaseStudyEvent(kind: kind)
-		Logger.caseStudyIfTransition.info("\(event.kind.label, privacy: .public)")
-		self.events.append(event)
+	private func log(_ event: TimelineEntry.Event) -> Void {
+		let entry = TimelineEntry(event: event)
+		Logger.caseStudyIfTransition.info("\(entry.event.label, privacy: .public)")
+		self.entries.append(entry)
 	}
 }
 
 private struct TransitionPanel: View {
-	let log: (CaseStudyEvent.Kind) -> Void
+	let log: (TimelineEntry.Event) -> Void
 
 	var body: some View {
 		VStack(spacing: 12) {

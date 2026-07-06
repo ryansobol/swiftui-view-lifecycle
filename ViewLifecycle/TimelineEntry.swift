@@ -1,16 +1,16 @@
 import Foundation
 
-struct CaseStudyEvent: Identifiable {
+struct TimelineEntry: Identifiable {
 	let id = UUID()
 	let timestamp: Date
-	let kind: Kind
+	let event: Event
 
-	init(timestamp: Date = .now, kind: Kind) {
+	init(timestamp: Date = .now, event: Event) {
 		self.timestamp = timestamp
-		self.kind = kind
+		self.event = event
 	}
 
-	enum Kind {
+	enum Event {
 		case action(Action)
 		case lifecycle(Lifecycle)
 		case transition(Transition)
@@ -40,7 +40,7 @@ struct CaseStudyEvent: Identifiable {
 	}
 }
 
-extension CaseStudyEvent.Kind {
+extension TimelineEntry.Event {
 	var label: String {
 		return switch self {
 		case let .action(.deleted(label)): "\(label) deleted"
