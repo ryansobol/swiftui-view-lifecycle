@@ -15,7 +15,7 @@ struct EventLog: View {
 		.font(.callout)
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-		.background(.quinary, in: .rect(corners: .concentric))
+		.background(Color.gray50, in: .rect(corners: .concentric))
 		.containerShape(.rect(cornerRadius: 8))
 	}
 
@@ -38,6 +38,7 @@ private struct EventLogHeader: View {
 			Button("Clear", role: .destructive, action: self.onClear)
 				.buttonStyle(.glassProminent)
 				.controlSize(.small)
+				.tint(Color.red400)
 				.disabled(self.isClearDisabled)
 		}
 	}
@@ -61,7 +62,7 @@ private struct EventLogContent: View {
 private struct EventLogEmptyState: View {
 	var body: some View {
 		Text("No events yet")
-			.foregroundStyle(.secondary)
+			.foregroundStyle(Color.gray600)
 	}
 }
 
@@ -70,12 +71,13 @@ private struct EventLogEntries: View {
 
 	var body: some View {
 		ScrollView {
-			LazyVStack(alignment: .leading, spacing: 6) {
+			LazyVStack(alignment: .leading, spacing: 2) {
 				ForEach(self.events) { event in
 					EventLogRow(event: event)
 				}
 			}
 		}
+		.scrollIndicatorsFlash(trigger: self.events.count)
 	}
 }
 
@@ -86,10 +88,32 @@ private struct EventLogRow: View {
 		HStack(alignment: .firstTextBaseline) {
 			Text(self.event.timestamp, style: .timer)
 				.monospacedDigit()
-				.foregroundStyle(.secondary)
+				.foregroundStyle(Color.gray600)
 				.frame(width: 56, alignment: .leading)
 
 			Text(self.event.kind.label)
+				.foregroundStyle(self.foregroundStyle(for: self.event.kind))
+		}
+		.padding(.horizontal, 4)
+		.padding(.vertical, 2)
+		.frame(maxWidth: .infinity, alignment: .leading)
+		.background(self.backgroundStyle(for: self.event.kind), in: .rect(corners: .concentric))
+		.containerShape(.rect(cornerRadius: 4))
+	}
+
+	private func backgroundStyle(for kind: CaseStudyEvent.Kind) -> Color.Shade {
+		return switch kind {
+		case .action: Color.green50
+		case .lifecycle: Color.blue50
+		case .transition: Color.purple50
+		}
+	}
+
+	private func foregroundStyle(for kind: CaseStudyEvent.Kind) -> Color.Shade {
+		return switch kind {
+		case .action: Color.green950
+		case .lifecycle: Color.blue950
+		case .transition: Color.purple950
 		}
 	}
 }

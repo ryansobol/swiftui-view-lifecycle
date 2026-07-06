@@ -11,9 +11,18 @@ struct CaseStudyEvent: Identifiable {
 	}
 
 	enum Kind {
-		case lifecycle(Lifecycle)
 		case action(Action)
+		case lifecycle(Lifecycle)
 		case transition(Transition)
+
+		enum Action {
+			case deleted(String)
+			case inserted(String)
+			case navigated(String)
+			case selected(String)
+			case tapped(String)
+			case toggled(isOn: Bool)
+		}
 
 		enum Lifecycle {
 			case stateCreated
@@ -22,20 +31,11 @@ struct CaseStudyEvent: Identifiable {
 			case viewDisappeared
 		}
 
-		enum Action {
-			case toggled(isOn: Bool)
-			case selected(String)
-			case tapped(String)
-			case inserted(String)
-			case deleted(String)
-			case navigated(String)
-		}
-
 		enum Transition {
-			case showStarted
-			case showCompleted
-			case hideStarted
 			case hideCompleted
+			case hideStarted
+			case showCompleted
+			case showStarted
 		}
 	}
 }
@@ -43,20 +43,20 @@ struct CaseStudyEvent: Identifiable {
 extension CaseStudyEvent.Kind {
 	var label: String {
 		return switch self {
+		case let .action(.deleted(label)): "\(label) deleted"
+		case let .action(.inserted(label)): "\(label) inserted"
+		case let .action(.navigated(label)): "\(label) navigated"
+		case let .action(.selected(label)): "\(label) selected"
+		case let .action(.tapped(label)): "\(label) tapped"
+		case let .action(.toggled(isOn)): isOn ? "toggled on" : "toggled off"
 		case .lifecycle(.stateCreated): "state created"
 		case .lifecycle(.taskStarted): "task started"
 		case .lifecycle(.viewAppeared): "view appeared"
 		case .lifecycle(.viewDisappeared): "view disappeared"
-		case let .action(.toggled(isOn)): isOn ? "toggled on" : "toggled off"
-		case let .action(.selected(label)): "\(label) selected"
-		case let .action(.tapped(label)): "\(label) tapped"
-		case let .action(.inserted(label)): "\(label) inserted"
-		case let .action(.deleted(label)): "\(label) deleted"
-		case let .action(.navigated(label)): "\(label) navigated"
-		case .transition(.showStarted): "show transition started"
-		case .transition(.showCompleted): "show transition completed"
-		case .transition(.hideStarted): "hide transition started"
 		case .transition(.hideCompleted): "hide transition completed"
+		case .transition(.hideStarted): "hide transition started"
+		case .transition(.showCompleted): "show transition completed"
+		case .transition(.showStarted): "show transition started"
 		}
 	}
 }

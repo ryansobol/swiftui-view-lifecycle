@@ -15,10 +15,10 @@ struct CaseStudyIfTransition: View {
 
 			ZStack(alignment: .leading) {
 				RoundedRectangle(cornerRadius: 8)
-					.fill(.secondary.opacity(0.12))
+					.fill(Color.gray50)
 					.overlay {
 						Text("Host view")
-							.foregroundStyle(.secondary)
+							.foregroundStyle(Color.gray700)
 					}
 
 				if self.isShowingPanel {
@@ -85,8 +85,6 @@ struct CaseStudyIfTransition: View {
 }
 
 private struct TransitionPanel: View {
-	@Environment(\.colorScheme) private var colorScheme
-
 	let log: (CaseStudyEvent.Kind) -> Void
 
 	var body: some View {
@@ -100,15 +98,7 @@ private struct TransitionPanel: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.background {
 			RoundedRectangle(cornerRadius: 8)
-				.fill(self.backgroundColor)
-				.overlay {
-					RoundedRectangle(cornerRadius: 8)
-						.fill(.blue.opacity(0.18))
-				}
-				.overlay {
-					RoundedRectangle(cornerRadius: 8)
-						.stroke(.blue.opacity(0.35))
-				}
+				.fill(Color.gray100)
 		}
 		.task {
 			self.log(.lifecycle(.taskStarted))
@@ -118,13 +108,6 @@ private struct TransitionPanel: View {
 		}
 		.onDisappear {
 			self.log(.lifecycle(.viewDisappeared))
-		}
-	}
-
-	private var backgroundColor: Color {
-		return switch self.colorScheme {
-		case .dark: Color(red: 0.08, green: 0.12, blue: 0.16)
-		default: Color(red: 0.88, green: 0.94, blue: 1.0)
 		}
 	}
 }
