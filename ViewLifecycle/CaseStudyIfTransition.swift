@@ -38,9 +38,7 @@ struct CaseStudyIfTransition: View {
 				"This case study compares lifecycle events with animation completion. The panel is conditionally inserted and removed with a move transition, so the event log shows whether `task`, `onAppear`, and `onDisappear` happen when the transition starts or when it finishes."
 			)
 			.font(.callout)
-			.frame(maxWidth: .infinity, alignment: .leading)
 			.fixedSize(horizontal: false, vertical: true)
-			.layoutPriority(2)
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
