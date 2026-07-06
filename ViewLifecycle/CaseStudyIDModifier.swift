@@ -4,22 +4,19 @@ struct CaseStudyIDModifier: View {
 	@State private var generation: Int = 0
 
 	var body: some View {
-		VStack {
+		TimelineCaseStudy(
+			caseStudy: .id,
+			explanation: "Changing `.id(_:)` gives the lifecycle monitor a new identity. The event log shows the previous monitor disappearing and a new monitor with fresh state appearing, even though the surrounding view stays in place."
+		) { recordEntry in
 			Button("Increment view ID") {
-				self.generation &+= 1
+				recordEntry(TimelineEntry(event: .action(.tapped("Increment view ID"))))
+				self.generation += 1
 			}
-			.buttonStyle(.bordered)
+			.buttonStyle(.glassProminent)
 
-			LifecycleMonitor(label: ".id(\(self.generation))")
+			LifecycleMonitor(label: ".id(\(self.generation))", recordEntry: recordEntry)
 				.id(self.generation)
-
-			Text(
-				"`.id(_:)` resets the view identity (and hence the view’s state) whenever the argument changes. It’s as if an entirely new view is created."
-			)
-			.font(.caption)
-			.frame(maxWidth: .infinity, alignment: .leading)
 		}
-		.padding()
 	}
 }
 
