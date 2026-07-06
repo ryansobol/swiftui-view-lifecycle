@@ -49,4 +49,22 @@ extension CaseStudy {
 		default: ""
 		}
 	}
+
+	var logCategory: String {
+		return switch self {
+		case .id: "case-study.id"
+		case .ifElse: "case-study.if-else"
+		case .ifTransition: "case-study.if-transition"
+		case .lazyVGrid: "case-study.lazy-v-grid"
+		case .lazyVStack: "case-study.lazy-v-stack"
+		case .listDynamic: "case-study.list-dynamic"
+		case .listStatic: "case-study.list-static"
+		case .navigationStack: "case-study.navigation-stack"
+		case .opacity: "case-study.opacity"
+		case .scrollViewDynamic: "case-study.scroll-view-dynamic"
+		case .scrollViewStatic: "case-study.scroll-view-static"
+		case .switch: "case-study.switch"
+		case .tabView: "case-study.tab-view"
+		}
+	}
 }

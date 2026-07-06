@@ -1,47 +1,27 @@
-import OSLog
 import SwiftUI
 
 struct CaseStudyIfElse: View {
-	@State private var entries = [TimelineEntry]()
-	@State private var flag = true
+	@State private var isShowingIfBranch = true
 
 	var body: some View {
-		VStack(alignment: .leading, spacing: 16) {
-			Toggle(isOn: self.$flag) {
+		TimelineCaseStudy(
+			caseStudy: .ifElse,
+			explanation: "Toggling the switch swaps the true and false branches of an `if`/`else` statement. Each toggle destroys the old branch and creates the new one: the new branch appears, the old branch disappears, then the new branch's `task` starts."
+		) { recordEntry in
+			Toggle(isOn: self.$isShowingIfBranch) {
 				Text("if/else toggle")
 			}
-			.onChange(of: self.flag) { _, newValue in
-				self.record(.action(.toggled(isOn: newValue)))
+			.onChange(of: self.isShowingIfBranch) { _, newValue in
+				recordEntry(TimelineEntry(event: .action(.toggled(isOn: newValue))))
 			}
 
-			if self.flag {
-				LifecycleMonitor(label: "on", recordEntry: self.record)
+			if self.isShowingIfBranch {
+				LifecycleMonitor(label: "if", recordEntry: recordEntry)
 			}
 			else {
-				LifecycleMonitor(label: "off", recordEntry: self.record)
+				LifecycleMonitor(label: "else", recordEntry: recordEntry)
 			}
-
-			EventLog(entries: self.$entries)
-				.layoutPriority(1)
-
-			Text(
-				"Toggling the switch swaps the true and false branches of an `if`/`else` statement. Each toggle destroys the old branch and creates the new one: the new branch appears, the old branch disappears, then the new branch's `task` starts."
-			)
-			.font(.callout)
-			.fixedSize(horizontal: false, vertical: true)
 		}
-		.padding()
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-	}
-
-	private func record(_ event: TimelineEntry.Event) -> Void {
-		let entry = TimelineEntry(event: event)
-		self.record(entry)
-	}
-
-	private func record(_ entry: TimelineEntry) -> Void {
-		Logger.caseStudyIfElse.info("\(entry.event.label, privacy: .public)")
-		self.entries.append(entry)
 	}
 }
 

@@ -57,7 +57,6 @@ struct LifecycleMonitor: View {
 		.task {
 			self.recordStateCreatedEntryIfNeeded()
 			let entry = self.record(.taskStarted(self.label))
-			print("\(entry.timestamp) \(self.label): task started")
 			let animation: Animation? = self.taskStartedEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.taskStartedEntry = entry
@@ -66,7 +65,6 @@ struct LifecycleMonitor: View {
 		.onAppear {
 			self.recordStateCreatedEntryIfNeeded()
 			let entry = self.record(.viewAppeared(self.label))
-			print("\(entry.timestamp) \(self.label): view appeared")
 			let animation: Animation? = self.onAppearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.onAppearEntry = entry
@@ -75,7 +73,6 @@ struct LifecycleMonitor: View {
 		.onDisappear {
 			self.recordStateCreatedEntryIfNeeded()
 			let entry = self.record(.viewDisappeared(self.label))
-			print("\(entry.timestamp) \(self.label): view disappeared")
 			let animation: Animation? = self.onDisappearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.onDisappearEntry = entry

@@ -53,10 +53,10 @@ extension TimelineEntry.Event {
 		case let .lifecycle(.taskStarted(label)): "\(label) task started"
 		case let .lifecycle(.viewAppeared(label)): "\(label) view appeared"
 		case let .lifecycle(.viewDisappeared(label)): "\(label) view disappeared"
-		case .transition(.hideCompleted): "hide transition completed"
-		case .transition(.hideStarted): "hide transition started"
-		case .transition(.showCompleted): "show transition completed"
-		case .transition(.showStarted): "show transition started"
+		case .transition(.hideCompleted): "Hide transition completed"
+		case .transition(.hideStarted): "Hide transition started"
+		case .transition(.showCompleted): "Show transition completed"
+		case .transition(.showStarted): "Show transition started"
 		}
 	}
 }
