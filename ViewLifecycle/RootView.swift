@@ -6,52 +6,91 @@ struct RootView: View {
 	#endif
 
 	var body: some View {
-		#if os(macOS)
-			RegularRootView()
-		#else
-			if self.horizontalSizeClass == .compact {
-				CompactRootView()
-			}
-			else {
-				RegularRootView()
-			}
-		#endif
-	}
-}
-
-struct CompactRootView: View {
-	var body: some View {
-		NavigationStack {
-			Sidebar()
-				.navigationDestination(for: CaseStudy.self) { caseStudy in
-					Detail(caseStudy: caseStudy)
+		LifecycleSession { recordEntry in
+			#if os(macOS)
+				RegularRootView(recordEntry: recordEntry)
+			#else
+				if self.horizontalSizeClass == .compact {
+					CompactRootView(recordEntry: recordEntry)
 				}
+				else {
+					RegularRootView(recordEntry: recordEntry)
+				}
+			#endif
 		}
 	}
 }
 
+struct CompactRootView: View {
+	let recordEntry: LifecycleSessionRecorder
+
+	@State private var path = [CompactRoute]()
+
+	var body: some View {
+		NavigationStack(path: self.$path) {
+			Sidebar(destination: CompactRoute.caseStudy)
+				.navigationDestination(for: CompactRoute.self) { route in
+					switch route {
+					case .caseStudy(.navigationStack):
+						CaseStudyNavigationStack.LevelView(
+							level: .root,
+							recordEntry: self.recordNavigationStackEntry,
+							nextDestination: CompactRoute.navigationLevel
+						)
+					case let .caseStudy(caseStudy):
+						Detail(caseStudy: caseStudy, recordEntry: self.recordEntry)
+					case let .navigationLevel(level):
+						CaseStudyNavigationStack.LevelView(
+							level: level,
+							recordEntry: self.recordNavigationStackEntry,
+							nextDestination: CompactRoute.navigationLevel
+						)
+					}
+				}
+		}
+	}
+
+	private func recordNavigationStackEntry(_ entry: TimelineEntry) -> Void {
+		self.recordEntry(.navigationStack, entry)
+	}
+}
+
+private enum CompactRoute: Hashable {
+	case caseStudy(CaseStudy)
+	case navigationLevel(CaseStudyNavigationStack.Level)
+}
+
 struct RegularRootView: View {
+	let recordEntry: LifecycleSessionRecorder
+
 	@State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
 
 	var body: some View {
 		NavigationSplitView(columnVisibility: self.$columnVisibility) {
 			Sidebar()
 				.navigationDestination(for: CaseStudy.self) { caseStudy in
-					RegularDetail(caseStudy: caseStudy)
+					RegularDetail(
+						caseStudy: caseStudy,
+						recordEntry: self.recordEntry
+					)
 				}
 		} detail: {
-			Detail(caseStudy: nil)
+			Detail(caseStudy: nil, recordEntry: self.recordEntry)
 		}
 	}
 }
 
-struct Sidebar: View {
+struct Sidebar<Destination: Hashable>: View {
+	let destination: (CaseStudy) -> Destination
+
+	@Environment(\.lifecycleSessionBottomScrollContentMargin) private var bottomScrollContentMargin
+
 	var body: some View {
 		List {
 			ForEach(CaseStudyCategory.all) { category in
 				Section {
 					ForEach(category.caseStudies) { caseStudy in
-						NavigationLink(value: caseStudy) {
+						NavigationLink(value: self.destination(caseStudy)) {
 							CaseStudyRow(caseStudy: caseStudy)
 						}
 					}
@@ -60,7 +99,14 @@ struct Sidebar: View {
 				}
 			}
 		}
+		.contentMargins(.bottom, self.bottomScrollContentMargin, for: .scrollContent)
 		.navigationTitle("SwiftUI View Lifecycle")
+	}
+}
+
+extension Sidebar where Destination == CaseStudy {
+	init() {
+		self.destination = { $0 }
 	}
 }
 
@@ -84,11 +130,15 @@ private struct CaseStudyRow: View {
 
 struct Detail: View {
 	let caseStudy: CaseStudy?
+	let recordEntry: LifecycleSessionRecorder
 
 	var body: some View {
 		Group {
 			if let caseStudy = self.caseStudy {
-				MainContent(caseStudy: caseStudy)
+				MainContent(
+					caseStudy: caseStudy,
+					recordEntry: self.recordEntry
+				)
 			}
 			else {
 				Text("Select a case study.")
@@ -100,50 +150,63 @@ struct Detail: View {
 
 struct RegularDetail: View {
 	let caseStudy: CaseStudy
+	let recordEntry: LifecycleSessionRecorder
 
 	var body: some View {
 		switch self.caseStudy {
 		case .navigationStack:
-			CaseStudyNavigationStack()
+			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
 				.navigationTitle(self.caseStudy.label)
 		default:
-			Detail(caseStudy: self.caseStudy)
+			Detail(
+				caseStudy: self.caseStudy,
+				recordEntry: self.recordEntry
+			)
 		}
+	}
+
+	private func recordCurrentCaseStudyEntry(_ entry: TimelineEntry) -> Void {
+		self.recordEntry(self.caseStudy, entry)
 	}
 }
 
 struct MainContent: View {
 	var caseStudy: CaseStudy
+	let recordEntry: LifecycleSessionRecorder
 
 	var body: some View {
 		switch self.caseStudy {
 		case .ifElse:
-			CaseStudyIfElse()
+			CaseStudyIfElse(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .switch:
-			CaseStudySwitch()
+			CaseStudySwitch(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .id:
-			CaseStudyIDModifier()
+			CaseStudyIDModifier(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .opacity:
-			CaseStudyOpacity()
+			CaseStudyOpacity(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .ifTransition:
-			CaseStudyIfTransition()
+			CaseStudyIfTransition(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .scrollViewStatic:
-			CaseStudyScrollViewStatic()
+			CaseStudyScrollViewStatic(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .scrollViewDynamic:
-			CaseStudyScrollViewDynamic()
+			CaseStudyScrollViewDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .listDynamic:
-			CaseStudyListDynamic()
+			CaseStudyListDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .listStatic:
-			CaseStudyListStatic()
+			CaseStudyListStatic(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .lazyVStack:
-			CaseStudyLazyVStack()
+			CaseStudyLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .lazyVGrid:
-			CaseStudyLazyVGrid()
+			CaseStudyLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .navigationStack:
-			CaseStudyNavigationStack.Content()
+			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
 		case .tabView:
-			CaseStudyTabView()
+			CaseStudyTabView(recordEntry: self.recordCurrentCaseStudyEntry)
 		}
+	}
+
+	private func recordCurrentCaseStudyEntry(_ entry: TimelineEntry) -> Void {
+		self.recordEntry(self.caseStudy, entry)
 	}
 }
 

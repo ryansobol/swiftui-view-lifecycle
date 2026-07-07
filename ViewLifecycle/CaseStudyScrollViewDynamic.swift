@@ -3,21 +3,21 @@ import SwiftUI
 struct CaseStudyScrollViewDynamic: View {
 	private static let initialCount = 10
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var items: [Item] = (1 ... Self.initialCount).map { i in Item(id: "Item \(i)") }
 
 	@State private var nextID: Int = Self.initialCount + 1
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			caseStudy: .scrollViewDynamic,
-			explanation: "Dynamic `ScrollView` content is still created with the scroll view. Prepending, appending, or deleting items changes which child views exist, and the event log stays visible while the content scrolls.",
-			isEventLogClearable: true
-		) { recordEntry in
+			explanation: "Dynamic `ScrollView` content is still created with the scroll view. Prepending, appending, or deleting items changes which child views exist, and the event log stays visible while the content scrolls."
+		) {
 			HStack {
 				Spacer()
 
 				Button {
-					self.prependItem(recordEntry: recordEntry)
+					self.prependItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Prepend", systemImage: "text.insert")
 						.labelStyle(.iconOnly)
@@ -25,7 +25,7 @@ struct CaseStudyScrollViewDynamic: View {
 				.buttonStyle(.glass)
 
 				Button {
-					self.appendItem(recordEntry: recordEntry)
+					self.appendItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Append", systemImage: "text.append")
 						.labelStyle(.iconOnly)
@@ -35,10 +35,10 @@ struct CaseStudyScrollViewDynamic: View {
 
 			ForEach(self.items) { item in
 				HStack(alignment: .top, spacing: 12) {
-					LifecycleMonitor(label: item.id, recordEntry: recordEntry)
+					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 
 					Button(role: .destructive) {
-						self.delete(item, recordEntry: recordEntry)
+						self.delete(item, recordEntry: self.recordEntry)
 					} label: {
 						Label("Delete", systemImage: "minus.circle")
 							.labelStyle(.iconOnly)
@@ -83,7 +83,11 @@ struct CaseStudyScrollViewDynamic: View {
 }
 
 #Preview {
-	NavigationStack {
-		CaseStudyScrollViewDynamic()
+	LifecycleSession { recordEntry in
+		NavigationStack {
+			CaseStudyScrollViewDynamic { entry in
+				recordEntry(.scrollViewDynamic, entry)
+			}
+		}
 	}
 }

@@ -6,20 +6,21 @@ struct CaseStudyLazyVGrid: View {
 		GridItem(.adaptive(minimum: 180), spacing: 4),
 	]
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 
 	@State private var nextID: Int = Self.itemCount + 1
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			caseStudy: .lazyVGrid,
 			explanation: "`LazyVGrid` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events across adaptive grid cells."
-		) { recordEntry in
+		) {
 			HStack {
 				Spacer()
 
 				Button {
-					self.prependItem(recordEntry: recordEntry)
+					self.prependItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Prepend", systemImage: "text.insert")
 						.labelStyle(.iconOnly)
@@ -27,7 +28,7 @@ struct CaseStudyLazyVGrid: View {
 				.buttonStyle(.glass)
 
 				Button {
-					self.appendItem(recordEntry: recordEntry)
+					self.appendItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Append", systemImage: "text.append")
 						.labelStyle(.iconOnly)
@@ -42,11 +43,11 @@ struct CaseStudyLazyVGrid: View {
 						LifecycleMonitor(
 							label: item.id,
 							style: .compact,
-							recordEntry: recordEntry
+							recordEntry: self.recordEntry
 						)
 
 						Button(role: .destructive) {
-							self.delete(item, recordEntry: recordEntry)
+							self.delete(item, recordEntry: self.recordEntry)
 						} label: {
 							Label("Delete", systemImage: "minus.circle")
 						}
@@ -93,5 +94,9 @@ struct CaseStudyLazyVGrid: View {
 }
 
 #Preview {
-	CaseStudyLazyVGrid()
+	LifecycleSession { recordEntry in
+		CaseStudyLazyVGrid { entry in
+			recordEntry(.lazyVGrid, entry)
+		}
+	}
 }

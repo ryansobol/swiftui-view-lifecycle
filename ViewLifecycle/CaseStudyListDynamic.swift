@@ -3,20 +3,21 @@ import SwiftUI
 struct CaseStudyListDynamic: View {
 	private static let itemCount = 10
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 
 	@State private var nextID: Int = Self.itemCount + 1
 
 	var body: some View {
 		ListCaseStudy(
-			caseStudy: .listDynamic,
 			explanation: "Dynamic `List` content is lazily created and recycled as rows move on and off screen. Prepending, appending, or deleting items changes which rows exist, and the event log shows both row lifecycle events and list mutations."
-		) { recordEntry in
+		) {
 			HStack {
 				Spacer()
 
 				Button {
-					self.prependItem(recordEntry: recordEntry)
+					self.prependItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Prepend", systemImage: "text.insert")
 						.labelStyle(.iconOnly)
@@ -24,7 +25,7 @@ struct CaseStudyListDynamic: View {
 				.buttonStyle(.glass)
 
 				Button {
-					self.appendItem(recordEntry: recordEntry)
+					self.appendItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Append", systemImage: "text.append")
 						.labelStyle(.iconOnly)
@@ -33,10 +34,10 @@ struct CaseStudyListDynamic: View {
 			}
 
 			ForEach(self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: recordEntry)
+				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 			}
 			.onDelete { offsets in
-				self.deleteItems(at: offsets, recordEntry: recordEntry)
+				self.deleteItems(at: offsets, recordEntry: self.recordEntry)
 			}
 		}
 		.animation(.default, value: self.items)
@@ -77,7 +78,11 @@ struct CaseStudyListDynamic: View {
 }
 
 #Preview {
-	NavigationStack {
-		CaseStudyListDynamic()
+	LifecycleSession { recordEntry in
+		NavigationStack {
+			CaseStudyListDynamic { entry in
+				recordEntry(.listDynamic, entry)
+			}
+		}
 	}
 }

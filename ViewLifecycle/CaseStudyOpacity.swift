@@ -1,17 +1,18 @@
 import SwiftUI
 
 struct CaseStudyOpacity: View {
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var opacity = 1.0
 
 	var body: some View {
 		TimelineCaseStudy(
-			caseStudy: .opacity,
 			explanation: "Changing `.opacity(_:)` adjusts how visible the lifecycle monitor is, but it does not change the monitor's identity. The event log shows opacity adjustments without new state, appearance, or disappearance events."
-		) { recordEntry in
+		) {
 			LabeledContent {
 				Slider(value: self.$opacity, in: 0 ... 1)
 					.onChange(of: self.opacity) {
-						recordEntry(
+						self.recordEntry(
 							TimelineEntry(event: .action(.adjusted("Opacity \(self.opacityPercentage)")))
 						)
 					}
@@ -19,7 +20,7 @@ struct CaseStudyOpacity: View {
 				Text("Opacity: \(self.opacityPercentage)")
 			}
 
-			LifecycleMonitor(label: ".opacity(\(self.opacityPercentage))", recordEntry: recordEntry)
+			LifecycleMonitor(label: ".opacity(\(self.opacityPercentage))", recordEntry: self.recordEntry)
 				.opacity(self.opacity)
 		}
 	}
@@ -30,5 +31,9 @@ struct CaseStudyOpacity: View {
 }
 
 #Preview {
-	CaseStudyOpacity()
+	LifecycleSession { recordEntry in
+		CaseStudyOpacity { entry in
+			recordEntry(.opacity, entry)
+		}
+	}
 }

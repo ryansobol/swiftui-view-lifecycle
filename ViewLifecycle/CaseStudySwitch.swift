@@ -11,13 +11,14 @@ private enum SwitchCase: String, CaseIterable, Identifiable {
 }
 
 struct CaseStudySwitch: View {
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var selectedCase: SwitchCase = .one
 
 	var body: some View {
 		TimelineCaseStudy(
-			caseStudy: .switch,
 			explanation: "Selecting a segment activates a different `switch` branch. The event log shows each branch getting its own state and lifecycle events. Returning to a case creates fresh state for that branch instead of reusing the previous instance."
-		) { recordEntry in
+		) {
 			Picker("Selection", selection: self.$selectedCase) {
 				ForEach(SwitchCase.allCases) { switchCase in
 					Text(switchCase.rawValue).tag(switchCase)
@@ -25,23 +26,27 @@ struct CaseStudySwitch: View {
 			}
 			.pickerStyle(.segmented)
 			.onChange(of: self.selectedCase) { _, newValue in
-				recordEntry(TimelineEntry(event: .action(.selected(newValue.rawValue))))
+				self.recordEntry(TimelineEntry(event: .action(.selected(newValue.rawValue))))
 			}
 
 			switch self.selectedCase {
 			case .one:
-				LifecycleMonitor(label: SwitchCase.one.rawValue, recordEntry: recordEntry)
+				LifecycleMonitor(label: SwitchCase.one.rawValue, recordEntry: self.recordEntry)
 
 			case .two:
-				LifecycleMonitor(label: SwitchCase.two.rawValue, recordEntry: recordEntry)
+				LifecycleMonitor(label: SwitchCase.two.rawValue, recordEntry: self.recordEntry)
 
 			case .three:
-				LifecycleMonitor(label: SwitchCase.three.rawValue, recordEntry: recordEntry)
+				LifecycleMonitor(label: SwitchCase.three.rawValue, recordEntry: self.recordEntry)
 			}
 		}
 	}
 }
 
 #Preview {
-	CaseStudySwitch()
+	LifecycleSession { recordEntry in
+		CaseStudySwitch { entry in
+			recordEntry(.switch, entry)
+		}
+	}
 }

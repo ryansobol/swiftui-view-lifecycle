@@ -6,19 +6,23 @@ struct CaseStudyScrollViewStatic: View {
 		Item(id: "Item \(i)")
 	}
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	var body: some View {
 		ScrollViewCaseStudy(
-			caseStudy: .scrollViewStatic,
-			explanation: "Static `ScrollView` content is created with the scroll view, even when some items start off screen. Unlike static `List` content, the event log shows that all eight items appear without scrolling them into view.",
-			isEventLogClearable: false
-		) { recordEntry in
+			explanation: "Static `ScrollView` content is created with the scroll view, even when some items start off screen. Unlike static `List` content, the event log shows that all eight items appear without scrolling them into view."
+		) {
 			ForEach(Self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: recordEntry)
+				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 			}
 		}
 	}
 }
 
 #Preview {
-	CaseStudyScrollViewStatic()
+	LifecycleSession { recordEntry in
+		CaseStudyScrollViewStatic { entry in
+			recordEntry(.scrollViewStatic, entry)
+		}
+	}
 }

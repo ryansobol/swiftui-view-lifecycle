@@ -3,20 +3,21 @@ import SwiftUI
 struct CaseStudyLazyVStack: View {
 	private static let itemCount = 10
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 
 	@State private var nextID: Int = Self.itemCount + 1
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			caseStudy: .lazyVStack,
 			explanation: "`LazyVStack` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events without `List` row recycling."
-		) { recordEntry in
+		) {
 			HStack {
 				Spacer()
 
 				Button {
-					self.prependItem(recordEntry: recordEntry)
+					self.prependItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Prepend", systemImage: "text.insert")
 						.labelStyle(.iconOnly)
@@ -24,7 +25,7 @@ struct CaseStudyLazyVStack: View {
 				.buttonStyle(.glass)
 
 				Button {
-					self.appendItem(recordEntry: recordEntry)
+					self.appendItem(recordEntry: self.recordEntry)
 				} label: {
 					Label("Append", systemImage: "text.append")
 						.labelStyle(.iconOnly)
@@ -35,10 +36,10 @@ struct CaseStudyLazyVStack: View {
 			LazyVStack(spacing: 16) {
 				ForEach(self.items) { item in
 					HStack(alignment: .top, spacing: 12) {
-						LifecycleMonitor(label: item.id, recordEntry: recordEntry)
+						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 
 						Button(role: .destructive) {
-							self.delete(item, recordEntry: recordEntry)
+							self.delete(item, recordEntry: self.recordEntry)
 						} label: {
 							Label("Delete", systemImage: "minus.circle")
 								.labelStyle(.iconOnly)
@@ -84,5 +85,9 @@ struct CaseStudyLazyVStack: View {
 }
 
 #Preview {
-	CaseStudyLazyVStack()
+	LifecycleSession { recordEntry in
+		CaseStudyLazyVStack { entry in
+			recordEntry(.lazyVStack, entry)
+		}
+	}
 }

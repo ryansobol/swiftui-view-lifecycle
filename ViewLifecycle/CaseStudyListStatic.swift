@@ -6,18 +6,23 @@ struct CaseStudyListStatic: View {
 		Item(id: "Item \(i)")
 	}
 
+	let recordEntry: (TimelineEntry) -> Void
+
 	var body: some View {
 		ListCaseStudy(
-			caseStudy: .listStatic,
 			explanation: "Static `List` content is still lazily created and recycled as rows move on and off screen. Unlike static `ScrollView` content, the event log shows that off-screen list rows do not appear until the list scrolls them into view."
-		) { recordEntry in
+		) {
 			ForEach(Self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: recordEntry)
+				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 			}
 		}
 	}
 }
 
 #Preview {
-	CaseStudyListStatic()
+	LifecycleSession { recordEntry in
+		CaseStudyListStatic { entry in
+			recordEntry(.listStatic, entry)
+		}
+	}
 }
