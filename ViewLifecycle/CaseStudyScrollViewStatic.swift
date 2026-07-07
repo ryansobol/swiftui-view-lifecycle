@@ -7,14 +7,13 @@ struct CaseStudyScrollViewStatic: View {
 	var body: some View {
 		ScrollView {
 			VStack(spacing: 16) {
-				LifecycleMonitor(label: "Top", recordEntry: self.recordEntry)
-
 				Text(
 					"Static `ScrollView` content is created with the scroll view, even when part of that content starts off screen. The event log may not match visual order, but it shows that Top and Bottom both appear before scrolling to Bottom."
 				)
 				.font(.callout)
 				.fixedSize(horizontal: false, vertical: true)
-				.frame(maxWidth: .infinity, alignment: .leading)
+
+				LifecycleMonitor(label: "Top", recordEntry: self.recordEntry)
 
 				VStack {
 					Image(systemName: "arrow.down.circle.fill")
