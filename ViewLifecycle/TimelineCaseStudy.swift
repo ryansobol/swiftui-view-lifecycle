@@ -1,3 +1,4 @@
+import Foundation
 import OSLog
 import SwiftUI
 
@@ -15,7 +16,7 @@ struct TimelineCaseStudy<Content: View>: View {
 			EventLog(entries: self.$entries)
 				.layoutPriority(1)
 
-			Text(self.explanation)
+			Text(try! AttributedString(markdown: self.explanation))
 				.font(.callout)
 				.fixedSize(horizontal: false, vertical: true)
 		}

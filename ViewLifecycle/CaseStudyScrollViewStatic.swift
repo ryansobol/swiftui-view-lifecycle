@@ -5,34 +5,23 @@ struct CaseStudyScrollViewStatic: View {
 	@State private var entries = [TimelineEntry]()
 
 	var body: some View {
-		ScrollView {
-			VStack(spacing: 16) {
-				Text(
-					"Static `ScrollView` content is created with the scroll view, even when part of that content starts off screen. The event log may not match visual order, but it shows that Top and Bottom both appear before scrolling to Bottom."
-				)
-				.font(.callout)
-				.fixedSize(horizontal: false, vertical: true)
+		ScrollViewCaseStudy(
+			explanation: "Static `ScrollView` content is created with the scroll view, even when part of that content starts off screen. The event log may not match visual order, but it shows that Top and Bottom both appear before scrolling to Bottom.",
+			entries: self.$entries,
+			isEventLogClearable: false
+		) {
+			LifecycleMonitor(label: "Top", recordEntry: self.recordEntry)
 
-				LifecycleMonitor(label: "Top", recordEntry: self.recordEntry)
-
-				VStack {
-					Image(systemName: "arrow.down.circle.fill")
-					Text("Scroll down")
-				}
-				.font(.largeTitle)
-				.padding(.vertical)
-
-				Spacer(minLength: 650)
-
-				LifecycleMonitor(label: "Bottom", recordEntry: self.recordEntry)
+			VStack {
+				Image(systemName: "arrow.down.circle.fill")
+				Text("Scroll down")
 			}
-			.padding()
-		}
-		.safeAreaInset(edge: .bottom) {
-			EventLog(entries: self.$entries, isShowingClearButton: false)
-				.frame(height: 220)
-				.padding()
-				.background(.regularMaterial)
+			.font(.largeTitle)
+			.padding(.vertical)
+
+			Spacer(minLength: 650)
+
+			LifecycleMonitor(label: "Bottom", recordEntry: self.recordEntry)
 		}
 	}
 

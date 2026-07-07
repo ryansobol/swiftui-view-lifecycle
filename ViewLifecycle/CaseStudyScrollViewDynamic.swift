@@ -12,37 +12,26 @@ struct CaseStudyScrollViewDynamic: View {
 	@State private var entries = [TimelineEntry]()
 
 	var body: some View {
-		ScrollView {
-			VStack(spacing: 16) {
-				Text(
-					"Dynamic `ScrollView` content is still created with the scroll view. Prepending, appending, or deleting items changes which child views exist, and the pinned event log keeps those lifecycle changes visible while the content scrolls."
-				)
-				.font(.callout)
-				.fixedSize(horizontal: false, vertical: true)
+		ScrollViewCaseStudy(
+			explanation: "Dynamic `ScrollView` content is still created with the scroll view. Prepending, appending, or deleting items changes which child views exist, and the event log stays visible while the content scrolls.",
+			entries: self.$entries,
+			isEventLogClearable: true
+		) {
+			ForEach(self.items) { item in
+				HStack(alignment: .top, spacing: 12) {
+					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 
-				ForEach(self.items) { item in
-					HStack(alignment: .top, spacing: 12) {
-						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
-
-						Button(role: .destructive) {
-							self.delete(item)
-						} label: {
-							Label("Delete", systemImage: "minus.circle")
-								.labelStyle(.iconOnly)
-						}
-						.buttonStyle(.glass)
-						.tint(.red)
-						.controlSize(.small)
+					Button(role: .destructive) {
+						self.delete(item)
+					} label: {
+						Label("Delete", systemImage: "minus.circle")
+							.labelStyle(.iconOnly)
 					}
+					.buttonStyle(.glass)
+					.tint(.red)
+					.controlSize(.small)
 				}
 			}
-			.padding()
-		}
-		.safeAreaInset(edge: .bottom) {
-			EventLog(entries: self.$entries)
-				.frame(height: 220)
-				.padding()
-				.background(.regularMaterial)
 		}
 		.toolbar {
 			ToolbarItem {
