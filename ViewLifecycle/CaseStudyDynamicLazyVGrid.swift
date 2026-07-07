@@ -1,7 +1,10 @@
 import SwiftUI
 
-struct CaseStudyLazyVStack: View {
-	private static let itemCount = 10
+struct CaseStudyDynamicLazyVGrid: View {
+	private static let itemCount = 20
+	private static let columns = [
+		GridItem(.adaptive(minimum: 180), spacing: 4),
+	]
 
 	let recordEntry: (TimelineEntry) -> Void
 
@@ -11,7 +14,7 @@ struct CaseStudyLazyVStack: View {
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			explanation: "`LazyVStack` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events without `List` row recycling."
+			explanation: "A dynamic `LazyVGrid` inside a `ScrollView` renders a mutable collection of cells. It creates cell views lazily as grid rows come into range, so visible insertions start immediately, offscreen insertions wait, and deleted cells end when removed."
 		) {
 			HStack {
 				Spacer()
@@ -32,21 +35,27 @@ struct CaseStudyLazyVStack: View {
 				}
 				.buttonStyle(.glass)
 			}
+			.padding(.horizontal)
 
-			LazyVStack(spacing: 16) {
+			LazyVGrid(columns: Self.columns) {
 				ForEach(self.items) { item in
-					HStack(alignment: .top, spacing: 12) {
-						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+					VStack(spacing: 4) {
+						LifecycleMonitor(
+							label: item.id,
+							style: .compact,
+							recordEntry: self.recordEntry
+						)
 
 						Button(role: .destructive) {
 							self.delete(item, recordEntry: self.recordEntry)
 						} label: {
 							Label("Delete", systemImage: "minus.circle")
-								.labelStyle(.iconOnly)
 						}
+						.padding(4)
 						.buttonStyle(.glass)
 						.tint(.red)
 					}
+					.padding(4)
 				}
 			}
 		}
@@ -86,8 +95,8 @@ struct CaseStudyLazyVStack: View {
 
 #Preview {
 	LifecycleSession { recordEntry in
-		CaseStudyLazyVStack { entry in
-			recordEntry(.lazyVStack, entry)
+		CaseStudyDynamicLazyVGrid { entry in
+			recordEntry(.dynamicLazyVGrid, entry)
 		}
 	}
 }

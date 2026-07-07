@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CaseStudyTabView: View {
-	fileprivate static let explanation = "`TabView` initializes the state for each tab's content view all at once when it first appears. `task`, `onAppear`, and `onDisappear` get called as you switch between tabs. State of offscreen tabs is kept alive."
+	fileprivate static let explanation = "`TabView` creates a tab's content the first time SwiftUI brings that tab into range. Switching tabs changes which content is visible, but previously created tabs can reappear with their existing state."
 
 	let recordEntry: (TimelineEntry) -> Void
 

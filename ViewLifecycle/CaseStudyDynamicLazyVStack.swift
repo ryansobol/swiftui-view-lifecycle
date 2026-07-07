@@ -1,17 +1,17 @@
 import SwiftUI
 
-struct CaseStudyScrollViewDynamic: View {
-	private static let initialCount = 10
+struct CaseStudyDynamicLazyVStack: View {
+	private static let itemCount = 10
 
 	let recordEntry: (TimelineEntry) -> Void
 
-	@State private var items: [Item] = (1 ... Self.initialCount).map { i in Item(id: "Item \(i)") }
+	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 
-	@State private var nextID: Int = Self.initialCount + 1
+	@State private var nextID: Int = Self.itemCount + 1
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			explanation: "Dynamic `ScrollView` content is still created with the scroll view. Prepending, appending, or deleting items changes which child views exist, and the event log stays visible while the content scrolls."
+			explanation: "A dynamic `LazyVStack` inside a `ScrollView` renders a mutable collection of children. It creates child views lazily as scrolling brings them into range, so visible insertions start immediately, offscreen insertions wait, and deleted children end when removed."
 		) {
 			HStack {
 				Spacer()
@@ -33,18 +33,20 @@ struct CaseStudyScrollViewDynamic: View {
 				.buttonStyle(.glass)
 			}
 
-			ForEach(self.items) { item in
-				HStack(alignment: .top, spacing: 12) {
-					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+			LazyVStack(spacing: 16) {
+				ForEach(self.items) { item in
+					HStack(alignment: .top, spacing: 12) {
+						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
 
-					Button(role: .destructive) {
-						self.delete(item, recordEntry: self.recordEntry)
-					} label: {
-						Label("Delete", systemImage: "minus.circle")
-							.labelStyle(.iconOnly)
+						Button(role: .destructive) {
+							self.delete(item, recordEntry: self.recordEntry)
+						} label: {
+							Label("Delete", systemImage: "minus.circle")
+								.labelStyle(.iconOnly)
+						}
+						.buttonStyle(.glass)
+						.tint(.red)
 					}
-					.buttonStyle(.glass)
-					.tint(.red)
 				}
 			}
 		}
@@ -84,10 +86,8 @@ struct CaseStudyScrollViewDynamic: View {
 
 #Preview {
 	LifecycleSession { recordEntry in
-		NavigationStack {
-			CaseStudyScrollViewDynamic { entry in
-				recordEntry(.scrollViewDynamic, entry)
-			}
+		CaseStudyDynamicLazyVStack { entry in
+			recordEntry(.dynamicLazyVStack, entry)
 		}
 	}
 }

@@ -3,27 +3,45 @@ import SwiftUI
 struct CaseStudyNavigationStack: View {
 	let recordEntry: (TimelineEntry) -> Void
 
+	@State private var path = [Level]()
+
 	var body: some View {
-		NavigationStack {
+		NavigationStack(path: self.$path) {
 			LevelView(
 				level: .root,
 				recordEntry: self.recordEntry,
-				nextDestination: { $0 }
+				pushLevel: self.pushLevel
 			)
 			.navigationDestination(for: Level.self) { level in
 				LevelView(
 					level: level,
 					recordEntry: self.recordEntry,
-					nextDestination: { $0 }
+					pushLevel: self.pushLevel
 				)
 			}
+		}
+		.onChange(of: self.path) { oldPath, newPath in
+			self.recordPoppedLevels(from: oldPath, to: newPath)
+		}
+	}
+
+	private func pushLevel(_ level: Level) -> Void {
+		self.recordEntry(TimelineEntry(event: .action(.pushed(level.monitorLabel))))
+		self.path.append(level)
+	}
+
+	private func recordPoppedLevels(from oldPath: [Level], to newPath: [Level]) -> Void {
+		guard oldPath.count > newPath.count else { return }
+
+		for level in oldPath.dropFirst(newPath.count).reversed() {
+			self.recordEntry(TimelineEntry(event: .action(.popped(level.monitorLabel))))
 		}
 	}
 }
 
 extension CaseStudyNavigationStack {
 	private static let explanation =
-		"Navigation views keep the state of content views on the navigation stack alive. `task`, `onAppear`, and `onDisappear` get called as content moves on and off screen. Popping a view off the stack ends the view's lifetime, destroying its state."
+		"Pushing adds a new level to the stack. Lower levels can disappear while they are covered, but their state stays alive until a pop removes them. When an existing level becomes visible again, it appears without creating new state."
 
 	struct Level: Hashable {
 		let value: Int
@@ -43,10 +61,10 @@ extension CaseStudyNavigationStack {
 		}
 	}
 
-	struct LevelView<Destination: Hashable>: View {
+	struct LevelView: View {
 		let level: Level
 		let recordEntry: (TimelineEntry) -> Void
-		let nextDestination: (Level) -> Destination
+		let pushLevel: (Level) -> Void
 
 		@Environment(\.lifecycleSessionEventLogInsetHeight) private var eventLogInsetHeight
 
@@ -57,7 +75,9 @@ extension CaseStudyNavigationStack {
 						text: CaseStudyNavigationStack.explanation
 					)
 
-					NavigationLink(value: self.nextDestination(self.level.next)) {
+					Button {
+						self.pushLevel(self.level.next)
+					} label: {
 						HStack(spacing: 12) {
 							LifecycleMonitor(
 								label: self.level.monitorLabel,

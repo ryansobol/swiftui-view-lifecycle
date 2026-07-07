@@ -8,7 +8,7 @@ extension CaseStudyCategory {
 	static let all = [
 		CaseStudyCategory(
 			id: "simple",
-			label: "Simple views",
+			label: "View identity",
 			caseStudies: [
 				.ifElse,
 				.switch,
@@ -21,17 +21,17 @@ extension CaseStudyCategory {
 			id: "scrolling",
 			label: "Scrolling containers",
 			caseStudies: [
-				.scrollViewStatic,
-				.listStatic,
-				.scrollViewDynamic,
-				.listDynamic,
-				.lazyVStack,
-				.lazyVGrid,
+				.staticVStack,
+				.dynamicVStack,
+				.staticList,
+				.dynamicList,
+				.dynamicLazyVStack,
+				.dynamicLazyVGrid,
 			]
 		),
 		CaseStudyCategory(
 			id: "navigation",
-			label: "Navigation containers",
+			label: "Presentation containers",
 			caseStudies: [
 				.navigationStack,
 				.tabView,

@@ -7,7 +7,7 @@ struct CaseStudyIfElse: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "Toggling the switch swaps the true and false branches of an `if`/`else` statement. Each toggle destroys the old branch and creates the new one: the new branch appears, the old branch disappears, then the new branch's `task` starts."
+			explanation: "Toggling the switch swaps between two conditional branches. Each branch has its own view identity, so SwiftUI creates a fresh lifetime for the new branch while ending the previous branch's lifetime."
 		) {
 			Toggle(isOn: self.$isShowingIfBranch) {
 				Text("if/else toggle")

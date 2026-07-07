@@ -7,7 +7,7 @@ struct CaseStudyOpacity: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "Changing `.opacity(_:)` adjusts how visible the lifecycle monitor is, but it does not change the monitor's identity. The event log shows opacity adjustments without new state, appearance, or disappearance events."
+			explanation: "Changing `.opacity(_:)` only changes how the view is drawn. Even at 0%, the view keeps its identity and state, so it does not disappear until it is removed from the screen."
 		) {
 			LabeledContent {
 				Slider(value: self.$opacity, in: 0 ... 1)

@@ -28,14 +28,14 @@ struct CompactRootView: View {
 
 	var body: some View {
 		NavigationStack(path: self.$path) {
-			Sidebar(destination: CompactRoute.caseStudy)
+			CompactSidebar(pushCaseStudy: self.pushCaseStudy)
 				.navigationDestination(for: CompactRoute.self) { route in
 					switch route {
 					case .caseStudy(.navigationStack):
 						CaseStudyNavigationStack.LevelView(
 							level: .root,
 							recordEntry: self.recordNavigationStackEntry,
-							nextDestination: CompactRoute.navigationLevel
+							pushLevel: self.pushNavigationLevel
 						)
 
 					case let .caseStudy(caseStudy):
@@ -45,21 +45,115 @@ struct CompactRootView: View {
 						CaseStudyNavigationStack.LevelView(
 							level: level,
 							recordEntry: self.recordNavigationStackEntry,
-							nextDestination: CompactRoute.navigationLevel
+							pushLevel: self.pushNavigationLevel
 						)
 					}
 				}
 		}
+		.onChange(of: self.path) { oldPath, newPath in
+			self.recordPoppedRoutes(from: oldPath, to: newPath)
+		}
+	}
+
+	private func pushCaseStudy(_ caseStudy: CaseStudy) -> Void {
+		let route = CompactRoute.caseStudy(caseStudy)
+
+		self.recordPushedRoute(route)
+		self.path.append(route)
+	}
+
+	private func pushNavigationLevel(_ level: CaseStudyNavigationStack.Level) -> Void {
+		let route = CompactRoute.navigationLevel(level)
+
+		self.recordPushedRoute(route)
+		self.path.append(route)
 	}
 
 	private func recordNavigationStackEntry(_ entry: TimelineEntry) -> Void {
 		self.recordEntry(.navigationStack, entry)
+	}
+
+	private func recordPushedRoute(_ route: CompactRoute) -> Void {
+		self.recordEntry(
+			route.caseStudy,
+			TimelineEntry(event: .action(.pushed(route.timelineLabel)))
+		)
+	}
+
+	private func recordPoppedRoute(_ route: CompactRoute) -> Void {
+		self.recordEntry(
+			route.caseStudy,
+			TimelineEntry(event: .action(.popped(route.timelineLabel)))
+		)
+	}
+
+	private func recordPoppedRoutes(
+		from oldPath: [CompactRoute],
+		to newPath: [CompactRoute]
+	) -> Void {
+		guard oldPath.count > newPath.count else { return }
+
+		for route in oldPath.dropFirst(newPath.count).reversed() {
+			self.recordPoppedRoute(route)
+		}
 	}
 }
 
 private enum CompactRoute: Hashable {
 	case caseStudy(CaseStudy)
 	case navigationLevel(CaseStudyNavigationStack.Level)
+
+	var caseStudy: CaseStudy {
+		return switch self {
+		case let .caseStudy(caseStudy): caseStudy
+		case .navigationLevel: .navigationStack
+		}
+	}
+
+	var timelineLabel: String {
+		return switch self {
+		case .caseStudy(.navigationStack): CaseStudyNavigationStack.Level.root.monitorLabel
+		case let .caseStudy(caseStudy): caseStudy.label
+		case let .navigationLevel(level): level.monitorLabel
+		}
+	}
+}
+
+struct CompactSidebar: View {
+	let pushCaseStudy: (CaseStudy) -> Void
+
+	@Environment(\.lifecycleSessionBottomScrollContentMargin) private var bottomScrollContentMargin
+
+	var body: some View {
+		List {
+			ForEach(CaseStudyCategory.all) { category in
+				Section {
+					ForEach(category.caseStudies) { caseStudy in
+						Button {
+							self.pushCaseStudy(caseStudy)
+						} label: {
+							HStack(spacing: 12) {
+								CaseStudyRow(caseStudy: caseStudy)
+
+								Spacer(minLength: 12)
+
+								Image(systemName: "chevron.right")
+									.font(.body.weight(.semibold))
+									.foregroundStyle(.secondary)
+									.accessibilityHidden(true)
+							}
+							.contentShape(.rect)
+						}
+						.buttonStyle(.plain)
+					}
+				} header: {
+					Text(category.label)
+				}
+			}
+		}
+		.contentMargins(.bottom, self.bottomScrollContentMargin, for: .scrollContent)
+		.navigationTitle("SwiftUI View Lifecycle")
+	}
 }
 
 struct RegularRootView: View {
@@ -194,23 +288,23 @@ struct MainContent: View {
 		case .ifTransition:
 			CaseStudyIfTransition(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .scrollViewStatic:
-			CaseStudyScrollViewStatic(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .staticVStack:
+			CaseStudyStaticVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .scrollViewDynamic:
-			CaseStudyScrollViewDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .dynamicVStack:
+			CaseStudyDynamicVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .listDynamic:
-			CaseStudyListDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .dynamicList:
+			CaseStudyDynamicList(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .listStatic:
-			CaseStudyListStatic(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .staticList:
+			CaseStudyStaticList(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .lazyVStack:
-			CaseStudyLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .dynamicLazyVStack:
+			CaseStudyDynamicLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .lazyVGrid:
-			CaseStudyLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .dynamicLazyVGrid:
+			CaseStudyDynamicLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
 
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)

@@ -17,7 +17,7 @@ struct CaseStudySwitch: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "Selecting a segment activates a different `switch` branch. The event log shows each branch getting its own state and lifecycle events. Returning to a case creates fresh state for that branch instead of reusing the previous instance."
+			explanation: "Selecting a segment activates a different `switch` branch. Each case has its own view identity, so switching away removes that branch and returning to it creates state again."
 		) {
 			Picker("Selection", selection: self.$selectedCase) {
 				ForEach(SwitchCase.allCases) { switchCase in

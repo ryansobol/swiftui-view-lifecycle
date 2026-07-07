@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CaseStudyScrollViewStatic: View {
+struct CaseStudyStaticVStack: View {
 	private static let itemCount = 10
 	private static let items: [Item] = (1 ... Self.itemCount).map { i in
 		Item(id: "Item \(i)")
@@ -10,7 +10,7 @@ struct CaseStudyScrollViewStatic: View {
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			explanation: "Static `ScrollView` content is created with the scroll view, even when some items start off screen. Unlike static `List` content, the event log shows that all eight items appear without scrolling them into view."
+			explanation: "A static `VStack` inside a `ScrollView` renders an immutable collection of items. `VStack` creates every child eagerly, so each item starts its lifetime as soon as the scroll view appears, even if it begins off screen."
 		) {
 			ForEach(Self.items) { item in
 				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
@@ -21,8 +21,8 @@ struct CaseStudyScrollViewStatic: View {
 
 #Preview {
 	LifecycleSession { recordEntry in
-		CaseStudyScrollViewStatic { entry in
-			recordEntry(.scrollViewStatic, entry)
+		CaseStudyStaticVStack { entry in
+			recordEntry(.staticVStack, entry)
 		}
 	}
 }

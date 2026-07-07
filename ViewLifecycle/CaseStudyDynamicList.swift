@@ -1,10 +1,7 @@
 import SwiftUI
 
-struct CaseStudyLazyVGrid: View {
-	private static let itemCount = 20
-	private static let columns = [
-		GridItem(.adaptive(minimum: 180), spacing: 4),
-	]
+struct CaseStudyDynamicList: View {
+	private static let itemCount = 10
 
 	let recordEntry: (TimelineEntry) -> Void
 
@@ -13,8 +10,8 @@ struct CaseStudyLazyVGrid: View {
 	@State private var nextID: Int = Self.itemCount + 1
 
 	var body: some View {
-		ScrollViewCaseStudy(
-			explanation: "`LazyVGrid` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events across adaptive grid cells."
+		ListCaseStudy(
+			explanation: "A dynamic `List` renders a mutable collection of rows. `List` creates row views lazily as scrolling brings them into range, so visible insertions start immediately, offscreen insertions wait, and deleted rows end when removed."
 		) {
 			HStack {
 				Spacer()
@@ -35,28 +32,12 @@ struct CaseStudyLazyVGrid: View {
 				}
 				.buttonStyle(.glass)
 			}
-			.padding(.horizontal)
 
-			LazyVGrid(columns: Self.columns) {
-				ForEach(self.items) { item in
-					VStack(spacing: 4) {
-						LifecycleMonitor(
-							label: item.id,
-							style: .compact,
-							recordEntry: self.recordEntry
-						)
-
-						Button(role: .destructive) {
-							self.delete(item, recordEntry: self.recordEntry)
-						} label: {
-							Label("Delete", systemImage: "minus.circle")
-						}
-						.padding(4)
-						.buttonStyle(.glass)
-						.tint(.red)
-					}
-					.padding(4)
-				}
+			ForEach(self.items) { item in
+				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+			}
+			.onDelete { offsets in
+				self.deleteItems(at: offsets, recordEntry: self.recordEntry)
 			}
 		}
 		.animation(.default, value: self.items)
@@ -78,12 +59,15 @@ struct CaseStudyLazyVGrid: View {
 		self.items.insert(newItem, at: 0)
 	}
 
-	private func delete(_ item: Item, recordEntry: (TimelineEntry) -> Void) -> Void {
-		guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
+	private func deleteItems(
+		at offsets: IndexSet,
+		recordEntry: (TimelineEntry) -> Void
+	) -> Void {
+		for item in offsets.map({ self.items[$0] }) {
+			recordEntry(TimelineEntry(event: .action(.deleted(item.id))))
+		}
 
-		recordEntry(TimelineEntry(event: .action(.deleted(item.id))))
-
-		self.items.remove(at: index)
+		self.items.remove(atOffsets: offsets)
 	}
 
 	private func nextItem() -> Item {
@@ -95,8 +79,10 @@ struct CaseStudyLazyVGrid: View {
 
 #Preview {
 	LifecycleSession { recordEntry in
-		CaseStudyLazyVGrid { entry in
-			recordEntry(.lazyVGrid, entry)
+		NavigationStack {
+			CaseStudyDynamicList { entry in
+				recordEntry(.dynamicList, entry)
+			}
 		}
 	}
 }

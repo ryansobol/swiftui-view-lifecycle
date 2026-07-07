@@ -9,7 +9,7 @@ struct CaseStudyIfTransition: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "This case study compares lifecycle events with animation completion. The panel is conditionally inserted and removed with a move transition, so the event log shows whether `task`, `onAppear`, and `onDisappear` happen when the transition starts or when it finishes."
+			explanation: "Showing the panel inserts a view with its own identity and starts its lifetime as the transition begins. Hiding the panel removes that identity only after the transition completes, so overlapping animations delay when the lifetime actually ends."
 		) {
 			Button(self.panelButtonLabel) {
 				self.recordEntry(TimelineEntry(event: .action(.tapped(self.panelButtonLabel))))

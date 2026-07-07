@@ -1,17 +1,17 @@
 import SwiftUI
 
-struct CaseStudyListDynamic: View {
-	private static let itemCount = 10
+struct CaseStudyDynamicVStack: View {
+	private static let initialCount = 10
 
 	let recordEntry: (TimelineEntry) -> Void
 
-	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
+	@State private var items: [Item] = (1 ... Self.initialCount).map { i in Item(id: "Item \(i)") }
 
-	@State private var nextID: Int = Self.itemCount + 1
+	@State private var nextID: Int = Self.initialCount + 1
 
 	var body: some View {
-		ListCaseStudy(
-			explanation: "Dynamic `List` content is lazily created and recycled as rows move on and off screen. Prepending, appending, or deleting items changes which rows exist, and the event log shows both row lifecycle events and list mutations."
+		ScrollViewCaseStudy(
+			explanation: "A dynamic `VStack` inside a `ScrollView` renders a mutable collection of items. `VStack` creates children eagerly, so initial items start together, inserted items start immediately, and deleted items end when removed."
 		) {
 			HStack {
 				Spacer()
@@ -34,10 +34,18 @@ struct CaseStudyListDynamic: View {
 			}
 
 			ForEach(self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
-			}
-			.onDelete { offsets in
-				self.deleteItems(at: offsets, recordEntry: self.recordEntry)
+				HStack(alignment: .top, spacing: 12) {
+					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+
+					Button(role: .destructive) {
+						self.delete(item, recordEntry: self.recordEntry)
+					} label: {
+						Label("Delete", systemImage: "minus.circle")
+							.labelStyle(.iconOnly)
+					}
+					.buttonStyle(.glass)
+					.tint(.red)
+				}
 			}
 		}
 		.animation(.default, value: self.items)
@@ -59,15 +67,12 @@ struct CaseStudyListDynamic: View {
 		self.items.insert(newItem, at: 0)
 	}
 
-	private func deleteItems(
-		at offsets: IndexSet,
-		recordEntry: (TimelineEntry) -> Void
-	) -> Void {
-		for item in offsets.map({ self.items[$0] }) {
-			recordEntry(TimelineEntry(event: .action(.deleted(item.id))))
-		}
+	private func delete(_ item: Item, recordEntry: (TimelineEntry) -> Void) -> Void {
+		guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
 
-		self.items.remove(atOffsets: offsets)
+		recordEntry(TimelineEntry(event: .action(.deleted(item.id))))
+
+		self.items.remove(at: index)
 	}
 
 	private func nextItem() -> Item {
@@ -80,8 +85,8 @@ struct CaseStudyListDynamic: View {
 #Preview {
 	LifecycleSession { recordEntry in
 		NavigationStack {
-			CaseStudyListDynamic { entry in
-				recordEntry(.listDynamic, entry)
+			CaseStudyDynamicVStack { entry in
+				recordEntry(.dynamicVStack, entry)
 			}
 		}
 	}

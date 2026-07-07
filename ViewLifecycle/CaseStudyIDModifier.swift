@@ -7,7 +7,7 @@ struct CaseStudyIDModifier: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "Changing `.id(_:)` gives the lifecycle monitor a new identity. The event log shows the previous monitor disappearing and a new monitor with fresh state appearing, even though the surrounding view stays in place."
+			explanation: "Changing `.id(_:)` gives the view a new identity without changing the surrounding layout. SwiftUI replaces the old view with a new one, so state is created again and the previous view disappears."
 		) {
 			Button("Increment view ID") {
 				self.recordEntry(TimelineEntry(event: .action(.tapped("Increment view ID"))))
