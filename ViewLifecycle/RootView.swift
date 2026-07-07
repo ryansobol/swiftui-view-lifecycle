@@ -37,8 +37,10 @@ struct CompactRootView: View {
 							recordEntry: self.recordNavigationStackEntry,
 							nextDestination: CompactRoute.navigationLevel
 						)
+
 					case let .caseStudy(caseStudy):
 						Detail(caseStudy: caseStudy, recordEntry: self.recordEntry)
+
 					case let .navigationLevel(level):
 						CaseStudyNavigationStack.LevelView(
 							level: level,
@@ -157,6 +159,7 @@ struct RegularDetail: View {
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
 				.navigationTitle(self.caseStudy.label)
+
 		default:
 			Detail(
 				caseStudy: self.caseStudy,
@@ -178,28 +181,40 @@ struct MainContent: View {
 		switch self.caseStudy {
 		case .ifElse:
 			CaseStudyIfElse(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .switch:
 			CaseStudySwitch(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .id:
 			CaseStudyIDModifier(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .opacity:
 			CaseStudyOpacity(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .ifTransition:
 			CaseStudyIfTransition(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .scrollViewStatic:
 			CaseStudyScrollViewStatic(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .scrollViewDynamic:
 			CaseStudyScrollViewDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .listDynamic:
 			CaseStudyListDynamic(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .listStatic:
 			CaseStudyListStatic(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .lazyVStack:
 			CaseStudyLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .lazyVGrid:
 			CaseStudyLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .tabView:
 			CaseStudyTabView(recordEntry: self.recordCurrentCaseStudyEntry)
 		}
