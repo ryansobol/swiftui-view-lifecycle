@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CaseStudyListDynamic: View {
-	private static let itemCount = 8
+	private static let itemCount = 10
 
 	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CaseStudyScrollViewDynamic: View {
-	private static let initialCount = 8
+	private static let initialCount = 10
 
 	@State private var items: [Item] = (1 ... Self.initialCount).map { i in Item(id: "Item \(i)") }
 

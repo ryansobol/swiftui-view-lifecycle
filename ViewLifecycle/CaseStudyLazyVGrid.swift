@@ -2,7 +2,7 @@ import OSLog
 import SwiftUI
 
 struct CaseStudyLazyVGrid: View {
-	private static let itemCount = 16
+	private static let itemCount = 20
 	private static let columns = [
 		GridItem(.adaptive(minimum: 180), spacing: 0),
 	]

@@ -2,7 +2,7 @@ import OSLog
 import SwiftUI
 
 struct CaseStudyLazyVStack: View {
-	private static let itemCount = 8
+	private static let itemCount = 10
 
 	@State private var items: [Item] = (1 ... Self.itemCount).map { i in Item(id: "Item \(i)") }
 
@@ -11,47 +11,52 @@ struct CaseStudyLazyVStack: View {
 
 	var body: some View {
 		ScrollView {
-			LazyVStack(spacing: 16) {
-				CaseStudyExplanation(
-					text: "`LazyVStack` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events without `List` row recycling."
-				)
+			VStack(spacing: 16) {
+				Group {
+					CaseStudyExplanation(
+						text: "`LazyVStack` content is lazily created inside a `ScrollView`. Prepending, appending, or deleting items changes which child views exist, and the event log shows lifecycle events without `List` row recycling."
+					)
 
-				HStack {
-					Spacer()
+					HStack {
+						Spacer()
 
-					Button {
-						self.prependItem()
-					} label: {
-						Label("Prepend", systemImage: "text.insert")
-							.labelStyle(.iconOnly)
-					}
-					.buttonStyle(.glass)
-
-					Button {
-						self.appendItem()
-					} label: {
-						Label("Append", systemImage: "text.append")
-							.labelStyle(.iconOnly)
-					}
-					.buttonStyle(.glass)
-				}
-
-				ForEach(self.items) { item in
-					HStack(alignment: .top, spacing: 12) {
-						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
-
-						Button(role: .destructive) {
-							self.delete(item)
+						Button {
+							self.prependItem()
 						} label: {
-							Label("Delete", systemImage: "minus.circle")
+							Label("Prepend", systemImage: "text.insert")
 								.labelStyle(.iconOnly)
 						}
 						.buttonStyle(.glass)
-						.tint(.red)
+
+						Button {
+							self.appendItem()
+						} label: {
+							Label("Append", systemImage: "text.append")
+								.labelStyle(.iconOnly)
+						}
+						.buttonStyle(.glass)
+					}
+				}
+				.padding(.horizontal)
+
+				LazyVStack(spacing: 16) {
+					ForEach(self.items) { item in
+						HStack(alignment: .top, spacing: 12) {
+							LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+
+							Button(role: .destructive) {
+								self.delete(item)
+							} label: {
+								Label("Delete", systemImage: "minus.circle")
+									.labelStyle(.iconOnly)
+							}
+							.buttonStyle(.glass)
+							.tint(.red)
+						}
 					}
 				}
 			}
-			.padding()
+			.padding(.vertical)
 		}
 		.safeAreaInset(edge: .bottom) {
 			EventLog(entries: self.$entries)

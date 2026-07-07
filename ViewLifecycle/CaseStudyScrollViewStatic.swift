@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CaseStudyScrollViewStatic: View {
-	private static let itemCount = 8
+	private static let itemCount = 10
 	private static let items: [Item] = (1 ... Self.itemCount).map { i in
 		Item(id: "Item \(i)")
 	}
