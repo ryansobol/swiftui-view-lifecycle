@@ -2,12 +2,10 @@ import SwiftUI
 
 struct EventLog: View {
 	@Binding var entries: [TimelineEntry]
-	var isShowingClearButton = true
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 8) {
 			EventLogHeader(
-				isShowingClearButton: self.isShowingClearButton,
 				isClearDisabled: self.entries.isEmpty,
 				onClear: self.clearEntries
 			)
@@ -27,7 +25,6 @@ struct EventLog: View {
 }
 
 private struct EventLogHeader: View {
-	let isShowingClearButton: Bool
 	let isClearDisabled: Bool
 	let onClear: () -> Void
 
@@ -38,13 +35,11 @@ private struct EventLogHeader: View {
 
 			Spacer()
 
-			if self.isShowingClearButton {
-				Button("Clear", role: .destructive, action: self.onClear)
-					.buttonStyle(.glassProminent)
-					.controlSize(.small)
-					.tint(Color.red400)
-					.disabled(self.isClearDisabled)
-			}
+			Button("Clear", role: .destructive, action: self.onClear)
+				.buttonStyle(.glassProminent)
+				.controlSize(.small)
+				.tint(Color.red400)
+				.disabled(self.isClearDisabled)
 		}
 	}
 }
@@ -130,16 +125,11 @@ private struct EventLogRow: View {
 	}
 }
 
-#Preview("Clear Button") {
-	EventLogPreview(isShowingClearButton: true)
-}
-
-#Preview("No Clear Button") {
-	EventLogPreview(isShowingClearButton: false)
+#Preview {
+	EventLogPreview()
 }
 
 private struct EventLogPreview: View {
-	let isShowingClearButton: Bool
 	@State private var entries = Self.initialEntries
 	@State private var nextEventIndex = 0
 
@@ -156,11 +146,8 @@ private struct EventLogPreview: View {
 					.buttonStyle(.glass)
 			}
 
-			EventLog(
-				entries: self.$entries,
-				isShowingClearButton: self.isShowingClearButton
-			)
-			.layoutPriority(1)
+			EventLog(entries: self.$entries)
+				.layoutPriority(1)
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

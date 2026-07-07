@@ -4,7 +4,7 @@ struct ListCaseStudy<Content: View>: View {
 	let explanation: String
 	@ViewBuilder let content: () -> Content
 
-	@Environment(\.lifecycleSessionEventLogInsetHeight) private var eventLogInsetHeight
+	@Environment(\.lifecycleSessionBottomScrollContentMargin) private var bottomScrollContentMargin
 
 	var body: some View {
 		List {
@@ -12,7 +12,7 @@ struct ListCaseStudy<Content: View>: View {
 
 			self.content()
 		}
-		.contentMargins(.bottom, self.eventLogInsetHeight, for: .scrollContent)
+		.contentMargins(.bottom, self.bottomScrollContentMargin, for: .scrollContent)
 	}
 }
 
