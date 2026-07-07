@@ -40,20 +40,20 @@ struct LifecycleSession<Content: View>: View {
 		self.content { caseStudy, entry in
 			self.recordEntry(caseStudy: caseStudy, entry: entry)
 		}
-			.environment(
-				\.lifecycleSessionBottomScrollContentMargin,
-				LifecycleSessionLayout.bottomScrollContentMargin
-			)
-			.environment(
-				\.lifecycleSessionEventLogInsetHeight,
-				LifecycleSessionLayout.eventLogInsetHeight
-			)
-			.safeAreaInset(edge: .bottom) {
-				EventLog(entries: self.$entries)
-					.frame(height: LifecycleSessionLayout.eventLogHeight)
-					.padding(LifecycleSessionLayout.eventLogPadding)
-					.background(.regularMaterial)
-			}
+		.environment(
+			\.lifecycleSessionBottomScrollContentMargin,
+			LifecycleSessionLayout.bottomScrollContentMargin
+		)
+		.environment(
+			\.lifecycleSessionEventLogInsetHeight,
+			LifecycleSessionLayout.eventLogInsetHeight
+		)
+		.safeAreaInset(edge: .bottom) {
+			EventLog(entries: self.$entries)
+				.frame(height: LifecycleSessionLayout.eventLogHeight)
+				.padding(LifecycleSessionLayout.eventLogPadding)
+				.background(.regularMaterial)
+		}
 	}
 
 	private func recordEntry(

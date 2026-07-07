@@ -23,7 +23,7 @@ struct CaseStudyIfTransition: View {
 					.overlay {
 						Text("Host view")
 							.foregroundStyle(Color.gray700)
-				}
+					}
 
 				if self.isShowingPanel {
 					TransitionPanel(recordEntry: self.recordEntry)

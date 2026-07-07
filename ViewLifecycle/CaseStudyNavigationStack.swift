@@ -22,7 +22,8 @@ struct CaseStudyNavigationStack: View {
 }
 
 extension CaseStudyNavigationStack {
-	private static let explanation = "Navigation views keep the state of content views on the navigation stack alive. `task`, `onAppear`, and `onDisappear` get called as content moves on and off screen. Popping a view off the stack ends the view's lifetime, destroying its state."
+	private static let explanation =
+		"Navigation views keep the state of content views on the navigation stack alive. `task`, `onAppear`, and `onDisappear` get called as content moves on and off screen. Popping a view off the stack ends the view's lifetime, destroying its state."
 
 	struct Level: Hashable {
 		let value: Int
