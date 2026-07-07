@@ -2,7 +2,13 @@ import SwiftUI
 
 /// A view that records and displays its lifecycle events.
 struct LifecycleMonitor: View {
+	enum Style {
+		case standard
+		case compact
+	}
+
 	var label: String
+	var style: Style = .standard
 	var recordEntry: (TimelineEntry) -> Void = { _ in }
 
 	@State private var stateCreatedEntry: TimelineEntry? = nil
@@ -12,39 +18,39 @@ struct LifecycleMonitor: View {
 	@State private var color: Color = LifecycleMonitorColors.next()
 
 	var body: some View {
-		VStack(spacing: 16) {
+		VStack(spacing: self.verticalSpacing) {
 			Text(self.label)
-				.font(.title3)
-			Grid(horizontalSpacing: 16) {
+				.font(self.titleFont)
+			Grid(horizontalSpacing: self.horizontalSpacing) {
 				GridRow(alignment: .firstTextBaseline) {
 					Text("@State")
 						.gridColumnAlignment(.leading)
-					TimelineEntryAge(entry: self.stateCreatedEntry, style: .relative)
+					TimelineEntryAge(entry: self.stateCreatedEntry, style: self.entryAgeStyle)
 						.gridColumnAlignment(.leading)
 				}
 				.help("When the state (incl. @State and @StateObject) for this view was created")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("task")
-					TimelineEntryAge(entry: self.taskStartedEntry, style: .relative)
+					TimelineEntryAge(entry: self.taskStartedEntry, style: self.entryAgeStyle)
 				}
 				.help("When task was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onAppear")
-					TimelineEntryAge(entry: self.onAppearEntry, style: .relative)
+					TimelineEntryAge(entry: self.onAppearEntry, style: self.entryAgeStyle)
 				}
 				.help("When onAppear was last called for this view")
 
 				GridRow(alignment: .firstTextBaseline) {
 					Text("onDisappear")
-					TimelineEntryAge(entry: self.onDisappearEntry, style: .relative)
+					TimelineEntryAge(entry: self.onDisappearEntry, style: self.entryAgeStyle)
 				}
 				.help("When onDisappear was last called for this view")
 			}
-			.font(.callout)
+			.font(self.bodyFont)
 		}
-		.padding()
+		.padding(self.cardPadding)
 		.frame(maxWidth: .infinity)
 		.background {
 			RoundedRectangle(cornerRadius: 16)
@@ -86,6 +92,48 @@ struct LifecycleMonitor: View {
 		}
 	}
 
+	private var titleFont: Font {
+		return switch self.style {
+		case .standard: .title3
+		case .compact: .headline
+		}
+	}
+
+	private var bodyFont: Font {
+		return switch self.style {
+		case .standard: .callout
+		case .compact: .subheadline
+		}
+	}
+
+	private var verticalSpacing: CGFloat {
+		return switch self.style {
+		case .standard: 16
+		case .compact: 10
+		}
+	}
+
+	private var horizontalSpacing: CGFloat {
+		return switch self.style {
+		case .standard: 16
+		case .compact: 10
+		}
+	}
+
+	private var cardPadding: CGFloat {
+		return switch self.style {
+		case .standard: 16
+		case .compact: 12
+		}
+	}
+
+	private var entryAgeStyle: TimelineEntryAge.Style {
+		return switch self.style {
+		case .standard: .relative
+		case .compact: .standalone
+		}
+	}
+
 	private func recordStateCreatedEntryIfNeeded() -> Void {
 		guard self.stateCreatedEntry == nil else { return }
 		let entry = TimelineEntry(event: .lifecycle(.stateCreated(self.label)))
@@ -100,11 +148,25 @@ struct LifecycleMonitor: View {
 	}
 }
 
-#Preview {
+#Preview("Standard") {
 	List {
-		ForEach(1 ..< 100) { i in
+		ForEach(1 ..< 11) { i in
 			LifecycleMonitor(label: "\(i)")
 		}
+	}
+}
+
+#Preview("Compact") {
+	ScrollView {
+		LazyVGrid(
+			columns: [GridItem(.adaptive(minimum: 180), spacing: 4)]
+		) {
+			ForEach(1 ..< 21) { i in
+				LifecycleMonitor(label: "Item \(i)", style: .compact)
+					.padding(4)
+			}
+		}
+		.padding()
 	}
 }
 
