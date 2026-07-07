@@ -1,7 +1,7 @@
 import OSLog
 import SwiftUI
 
-struct ScrollViewCaseStudy<Content: View>: View {
+struct ListCaseStudy<Content: View>: View {
 	let caseStudy: CaseStudy
 	let explanation: String
 	var isEventLogClearable = true
@@ -10,13 +10,10 @@ struct ScrollViewCaseStudy<Content: View>: View {
 	@State private var entries = [TimelineEntry]()
 
 	var body: some View {
-		ScrollView {
-			VStack(spacing: 16) {
-				CaseStudyExplanation(text: self.explanation)
+		List {
+			CaseStudyExplanation(text: self.explanation)
 
-				self.content(self.recordEntry)
-			}
-			.padding()
+			self.content(self.recordEntry)
 		}
 		.safeAreaInset(edge: .bottom) {
 			EventLog(
@@ -44,15 +41,15 @@ struct ScrollViewCaseStudy<Content: View>: View {
 	}
 }
 
-#Preview("Scroll view case study") {
-	ScrollViewCaseStudyPreview()
+#Preview("List case study") {
+	ListCaseStudyPreview()
 }
 
-private struct ScrollViewCaseStudyPreview: View {
+private struct ListCaseStudyPreview: View {
 	var body: some View {
-		ScrollViewCaseStudy(
-			caseStudy: .scrollViewStatic,
-			explanation: "This preview exercises the scroll view shell with a manual action and a lifecycle monitor. The shell owns the event log and logging; the monitor only reports lifecycle entries through the entry sink."
+		ListCaseStudy(
+			caseStudy: .listStatic,
+			explanation: "This preview exercises the list shell with a manual action and a lifecycle monitor. The shell owns the event log and logging; the monitor only reports lifecycle entries through the entry sink."
 		) { recordEntry in
 			LifecycleMonitor(label: "Preview monitor", recordEntry: recordEntry)
 		}

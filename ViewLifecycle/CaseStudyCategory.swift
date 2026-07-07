@@ -29,8 +29,8 @@ extension CaseStudyCategory {
 			id: "list",
 			label: "List",
 			caseStudies: [
-				.listDynamic,
 				.listStatic,
+				.listDynamic,
 			]
 		),
 		CaseStudyCategory(

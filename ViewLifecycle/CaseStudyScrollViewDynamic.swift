@@ -1,13 +1,11 @@
 import SwiftUI
 
 struct CaseStudyScrollViewDynamic: View {
-	private static let initialItemCount = 8
+	private static let initialCount = 8
 
-	@State private var items: [Item] = (1 ... Self.initialItemCount).map { i in
-		Item(id: "Item \(i)")
-	}
+	@State private var items: [Item] = (1 ... Self.initialCount).map { i in Item(id: "Item \(i)") }
 
-	@State private var nextID: Int = Self.initialItemCount + 1
+	@State private var nextID: Int = Self.initialCount + 1
 
 	var body: some View {
 		ScrollViewCaseStudy(

@@ -54,6 +54,12 @@ struct LifecycleMonitor: View {
 						.stroke(self.color.opacity(0.35))
 				}
 		}
+		.alignmentGuide(.listRowSeparatorLeading) { dimensions in
+			dimensions[.leading]
+		}
+		.alignmentGuide(.listRowSeparatorTrailing) { dimensions in
+			dimensions[.trailing]
+		}
 		.task {
 			self.recordStateCreatedEntryIfNeeded()
 			let entry = self.record(.taskStarted(self.label))

@@ -43,7 +43,7 @@ extension CaseStudy {
 		return switch self {
 		case .ifTransition: "A conditionally inserted side panel with a move transition."
 		case .scrollViewDynamic: "A VStack with dynamic content, embedded in a ScrollView."
-		case .listStatic: "A List with a bunch of hardcoded child views, not using ForEach."
+		case .listStatic: "A List with a fixed set of items."
 		case .navigationStack: "A NavigationStack with infinite levels of drill-down."
 		case .tabView: "TabView with multiple tabs, each with static content."
 		default: ""
