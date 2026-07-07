@@ -13,25 +13,14 @@ struct CaseStudyList: View {
 		ListCaseStudy(
 			explanation: "`List` lazily creates and recycles rows as they move through the viewport. Row events may not follow data order, and a row can be recreated while its data is still in the collection."
 		) {
-			HStack {
-				Spacer()
-
-				Button {
+			CaseStudyItemActions(
+				prepend: {
 					self.prependItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Prepend", systemImage: "text.insert")
-						.labelStyle(.iconOnly)
-				}
-				.buttonStyle(.glass)
-
-				Button {
+				},
+				append: {
 					self.appendItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Append", systemImage: "text.append")
-						.labelStyle(.iconOnly)
 				}
-				.buttonStyle(.glass)
-			}
+			)
 
 			ForEach(self.items) { item in
 				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)

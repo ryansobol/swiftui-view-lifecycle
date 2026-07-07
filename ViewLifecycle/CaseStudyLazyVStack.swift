@@ -11,42 +11,28 @@ struct CaseStudyLazyVStack: View {
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			explanation: "`LazyVStack` creates children as they approach the viewport instead of building the whole stack up front. A child's lifetime starts when scrolling brings it near, not when its data enters the stack."
+			explanation: "`LazyVStack` creates children as they approach the viewport instead of building the whole stack up front. A child's lifetime starts when scrolling brings it near, not when its data enters the stack.",
+			usesSwipeActionsContainer: true
 		) {
-			HStack {
-				Spacer()
-
-				Button {
+			CaseStudyItemActions(
+				prepend: {
 					self.prependItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Prepend", systemImage: "text.insert")
-						.labelStyle(.iconOnly)
-				}
-				.buttonStyle(.glass)
-
-				Button {
+				},
+				append: {
 					self.appendItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Append", systemImage: "text.append")
-						.labelStyle(.iconOnly)
 				}
-				.buttonStyle(.glass)
-			}
+			)
 
 			LazyVStack(spacing: 16) {
 				ForEach(self.items) { item in
-					HStack(alignment: .top, spacing: 12) {
-						LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
-
-						Button(role: .destructive) {
-							self.delete(item, recordEntry: self.recordEntry)
-						} label: {
-							Label("Delete", systemImage: "minus.circle")
-								.labelStyle(.iconOnly)
+					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+						.caseStudySwipeActions {
+							CaseStudySwipeActionButton {
+								self.delete(item, recordEntry: self.recordEntry)
+							} label: {
+								Label("Delete", systemImage: "trash")
+							}
 						}
-						.buttonStyle(.glass)
-						.tint(.red)
-					}
 				}
 			}
 		}

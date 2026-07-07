@@ -13,39 +13,24 @@ struct CaseStudyVStack: View {
 		ScrollViewCaseStudy(
 			explanation: "`VStack` creates every child as soon as the scroll view appears, even children below the viewport. Scrolling changes what is visible, but it does not create or end child lifetimes."
 		) {
-			HStack {
-				Spacer()
-
-				Button {
+			CaseStudyItemActions(
+				prepend: {
 					self.prependItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Prepend", systemImage: "text.insert")
-						.labelStyle(.iconOnly)
-				}
-				.buttonStyle(.glass)
-
-				Button {
+				},
+				append: {
 					self.appendItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Append", systemImage: "text.append")
-						.labelStyle(.iconOnly)
 				}
-				.buttonStyle(.glass)
-			}
+			)
 
 			ForEach(self.items) { item in
-				HStack(alignment: .top, spacing: 12) {
-					LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
-
-					Button(role: .destructive) {
-						self.delete(item, recordEntry: self.recordEntry)
-					} label: {
-						Label("Delete", systemImage: "minus.circle")
-							.labelStyle(.iconOnly)
+				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+					.caseStudySwipeActions {
+						CaseStudySwipeActionButton {
+							self.delete(item, recordEntry: self.recordEntry)
+						} label: {
+							Label("Delete", systemImage: "trash")
+						}
 					}
-					.buttonStyle(.glass)
-					.tint(.red)
-				}
 			}
 		}
 		.animation(.default, value: self.items)

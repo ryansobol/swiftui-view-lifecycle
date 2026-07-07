@@ -16,26 +16,14 @@ struct CaseStudyLazyVGrid: View {
 		ScrollViewCaseStudy(
 			explanation: "`LazyVGrid` creates cells lazily in row-sized batches as grid rows approach the viewport. Cell lifetimes follow the grid's layout batches, not just each item's position in the data."
 		) {
-			HStack {
-				Spacer()
-
-				Button {
+			CaseStudyItemActions(
+				prepend: {
 					self.prependItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Prepend", systemImage: "text.insert")
-						.labelStyle(.iconOnly)
-				}
-				.buttonStyle(.glass)
-
-				Button {
+				},
+				append: {
 					self.appendItem(recordEntry: self.recordEntry)
-				} label: {
-					Label("Append", systemImage: "text.append")
-						.labelStyle(.iconOnly)
 				}
-				.buttonStyle(.glass)
-			}
-			.padding(.horizontal)
+			)
 
 			LazyVGrid(columns: Self.columns) {
 				ForEach(self.items) { item in
@@ -49,7 +37,12 @@ struct CaseStudyLazyVGrid: View {
 						Button(role: .destructive) {
 							self.delete(item, recordEntry: self.recordEntry)
 						} label: {
-							Label("Delete", systemImage: "minus.circle")
+							Label {
+								Text("Delete")
+									.foregroundStyle(.primary)
+							} icon: {
+								Image(systemName: "trash")
+							}
 						}
 						.padding(4)
 						.buttonStyle(.glass)
