@@ -7,7 +7,7 @@ struct CaseStudyCategory: Identifiable {
 extension CaseStudyCategory {
 	static let all = [
 		CaseStudyCategory(
-			id: "simple",
+			id: "view-identity",
 			label: "View identity",
 			caseStudies: [
 				.ifElse,
@@ -18,19 +18,17 @@ extension CaseStudyCategory {
 			]
 		),
 		CaseStudyCategory(
-			id: "scrolling",
+			id: "scrolling-containers",
 			label: "Scrolling containers",
 			caseStudies: [
-				.staticVStack,
-				.dynamicVStack,
-				.staticList,
-				.dynamicList,
-				.dynamicLazyVStack,
-				.dynamicLazyVGrid,
+				.list,
+				.vStack,
+				.lazyVStack,
+				.lazyVGrid,
 			]
 		),
 		CaseStudyCategory(
-			id: "navigation",
+			id: "presentation-containers",
 			label: "Presentation containers",
 			caseStudies: [
 				.navigationStack,

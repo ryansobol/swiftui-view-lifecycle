@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CaseStudyDynamicVStack: View {
+struct CaseStudyVStack: View {
 	private static let initialCount = 10
 
 	let recordEntry: (TimelineEntry) -> Void
@@ -11,7 +11,7 @@ struct CaseStudyDynamicVStack: View {
 
 	var body: some View {
 		ScrollViewCaseStudy(
-			explanation: "A dynamic `VStack` inside a `ScrollView` renders a mutable collection of items. `VStack` creates children eagerly, so initial items start together, inserted items start immediately, and deleted items end when removed."
+			explanation: "`VStack` creates every child as soon as the scroll view appears, even children below the viewport. Scrolling changes what is visible, but it does not create or end child lifetimes."
 		) {
 			HStack {
 				Spacer()
@@ -85,8 +85,8 @@ struct CaseStudyDynamicVStack: View {
 #Preview {
 	LifecycleSession { recordEntry in
 		NavigationStack {
-			CaseStudyDynamicVStack { entry in
-				recordEntry(.dynamicVStack, entry)
+			CaseStudyVStack { entry in
+				recordEntry(.vStack, entry)
 			}
 		}
 	}

@@ -240,7 +240,7 @@ struct Detail: View {
 				Text("Select a case study.")
 			}
 		}
-		.navigationTitle(self.caseStudy?.label ?? "")
+		.navigationTitle(self.caseStudy?.navigationTitle ?? "")
 	}
 }
 
@@ -252,7 +252,7 @@ struct RegularDetail: View {
 		switch self.caseStudy {
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
-				.navigationTitle(self.caseStudy.label)
+				.navigationTitle(self.caseStudy.navigationTitle)
 
 		default:
 			Detail(
@@ -288,23 +288,17 @@ struct MainContent: View {
 		case .ifTransition:
 			CaseStudyIfTransition(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .staticVStack:
-			CaseStudyStaticVStack(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .vStack:
+			CaseStudyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .dynamicVStack:
-			CaseStudyDynamicVStack(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .list:
+			CaseStudyList(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .dynamicList:
-			CaseStudyDynamicList(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .lazyVStack:
+			CaseStudyLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
-		case .staticList:
-			CaseStudyStaticList(recordEntry: self.recordCurrentCaseStudyEntry)
-
-		case .dynamicLazyVStack:
-			CaseStudyDynamicLazyVStack(recordEntry: self.recordCurrentCaseStudyEntry)
-
-		case .dynamicLazyVGrid:
-			CaseStudyDynamicLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
+		case .lazyVGrid:
+			CaseStudyLazyVGrid(recordEntry: self.recordCurrentCaseStudyEntry)
 
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
