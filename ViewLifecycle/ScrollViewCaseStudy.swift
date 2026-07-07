@@ -1,21 +1,20 @@
-import Foundation
+import OSLog
 import SwiftUI
 
 struct ScrollViewCaseStudy<Content: View>: View {
+	let caseStudy: CaseStudy
 	let explanation: String
-	@Binding var entries: [TimelineEntry]
-	let isEventLogClearable: Bool
-	@ViewBuilder let content: () -> Content
+	var isEventLogClearable = true
+	@ViewBuilder let content: (_ recordEntry: @escaping (TimelineEntry) -> Void) -> Content
+
+	@State private var entries = [TimelineEntry]()
 
 	var body: some View {
 		ScrollView {
 			VStack(spacing: 16) {
-				Text(try! AttributedString(markdown: self.explanation))
-					.font(.callout)
-					.fixedSize(horizontal: false, vertical: true)
-					.frame(maxWidth: .infinity, alignment: .leading)
+				CaseStudyExplanation(text: self.explanation)
 
-				self.content()
+				self.content(self.recordEntry)
 			}
 			.padding()
 		}
@@ -28,5 +27,19 @@ struct ScrollViewCaseStudy<Content: View>: View {
 			.padding()
 			.background(.regularMaterial)
 		}
+	}
+
+	private var logger: Logger {
+		return .caseStudy(self.caseStudy)
+	}
+
+	private func recordEntry(_ entry: TimelineEntry) -> Void {
+		#if DEBUG
+			print("\(entry.timestamp) \(entry.event.label)")
+		#else
+			self.logger.info("\(entry.event.label, privacy: .public)")
+		#endif
+
+		self.entries.append(entry)
 	}
 }

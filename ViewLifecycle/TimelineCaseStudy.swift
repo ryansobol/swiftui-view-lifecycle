@@ -11,14 +11,12 @@ struct TimelineCaseStudy<Content: View>: View {
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 16) {
+			CaseStudyExplanation(text: self.explanation)
+
 			self.content(self.recordEntry)
 
 			EventLog(entries: self.$entries)
 				.layoutPriority(1)
-
-			Text(try! AttributedString(markdown: self.explanation))
-				.font(.callout)
-				.fixedSize(horizontal: false, vertical: true)
 		}
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
