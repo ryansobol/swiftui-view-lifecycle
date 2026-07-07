@@ -3,13 +3,8 @@ import SwiftUI
 
 typealias LifecycleSessionRecorder = (_ caseStudy: CaseStudy, _ entry: TimelineEntry) -> Void
 
-private enum LifecycleSessionLayout {
-	static let eventLogHeight: CGFloat = 220
-	static let eventLogPadding: CGFloat = 16
-	static let eventLogSpacing: CGFloat = 16
-	static let eventLogInsetHeight = Self.eventLogHeight + (Self.eventLogPadding * 2)
-	static let bottomScrollContentMargin = Self.eventLogInsetHeight + Self.eventLogSpacing
-}
+private let eventLogInsetHeight: CGFloat = 252
+private let bottomScrollContentMargin = eventLogInsetHeight + 16
 
 private struct LifecycleSessionBottomScrollContentMarginKey: EnvironmentKey {
 	static let defaultValue: CGFloat = 0
@@ -42,17 +37,32 @@ struct LifecycleSession<Content: View>: View {
 		}
 		.environment(
 			\.lifecycleSessionBottomScrollContentMargin,
-			LifecycleSessionLayout.bottomScrollContentMargin
+			bottomScrollContentMargin
 		)
 		.environment(
 			\.lifecycleSessionEventLogInsetHeight,
-			LifecycleSessionLayout.eventLogInsetHeight
+			eventLogInsetHeight
 		)
 		.safeAreaInset(edge: .bottom) {
 			EventLog(entries: self.$entries)
-				.frame(height: LifecycleSessionLayout.eventLogHeight)
-				.padding(LifecycleSessionLayout.eventLogPadding)
-				.background(.regularMaterial)
+				.frame(maxWidth: .infinity)
+				.frame(height: eventLogInsetHeight)
+				.background {
+					ConcentricRectangle(
+						uniformTopCorners: .concentric,
+						uniformBottomCorners: .fixed(0)
+					)
+					.fill(.regularMaterial)
+					.ignoresSafeArea(edges: .bottom)
+				}
+				.containerShape(
+					.rect(
+						topLeadingRadius: 24,
+						bottomLeadingRadius: 0,
+						bottomTrailingRadius: 0,
+						topTrailingRadius: 24
+					)
+				)
 		}
 	}
 

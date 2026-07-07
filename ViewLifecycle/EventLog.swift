@@ -15,8 +15,6 @@ struct EventLog: View {
 		.font(.callout)
 		.padding()
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-		.background(Color.gray50, in: .rect(corners: .concentric))
-		.containerShape(.rect(cornerRadius: 8))
 	}
 
 	private func clearEntries() -> Void {
@@ -93,19 +91,22 @@ private struct EventLogRow: View {
 	let entry: TimelineEntry
 
 	var body: some View {
-		HStack(alignment: .firstTextBaseline) {
+		HStack(alignment: .firstTextBaseline, spacing: 12) {
 			TimelineEntryAge(entry: self.entry)
 				.foregroundStyle(Color.gray600)
-				.frame(width: 56, alignment: .leading)
+				.frame(width: 44, alignment: .leading)
 
 			Text(self.entry.event.label)
 				.foregroundStyle(self.foregroundStyle(for: self.entry.event))
 		}
-		.padding(.horizontal, 4)
+		.padding(.horizontal, 10)
 		.padding(.vertical, 2)
 		.frame(maxWidth: .infinity, alignment: .leading)
-		.background(self.backgroundStyle(for: self.entry.event), in: .rect(corners: .concentric))
-		.containerShape(.rect(cornerRadius: 4))
+		.background {
+			RoundedRectangle(cornerRadius: 6)
+				.fill(self.backgroundStyle(for: self.entry.event))
+				.opacity(0.55)
+		}
 	}
 
 	private func backgroundStyle(for event: TimelineEntry.Event) -> Color.Shade {
