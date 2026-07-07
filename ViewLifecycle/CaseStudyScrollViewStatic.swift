@@ -1,24 +1,20 @@
 import SwiftUI
 
 struct CaseStudyScrollViewStatic: View {
+	private static let itemCount = 8
+	private static let items: [Item] = (1 ... Self.itemCount).map { i in
+		Item(id: "Item \(i)")
+	}
+
 	var body: some View {
 		ScrollViewCaseStudy(
 			caseStudy: .scrollViewStatic,
-			explanation: "Static `ScrollView` content is created with the scroll view, even when part of that content starts off screen. The event log may not match visual order, but it shows that Top and Bottom both appear before scrolling to Bottom.",
+			explanation: "Static `ScrollView` content is created with the scroll view, even when some items start off screen. Unlike static `List` content, the event log shows that all eight items appear without scrolling them into view.",
 			isEventLogClearable: false
 		) { recordEntry in
-			LifecycleMonitor(label: "Top", recordEntry: recordEntry)
-
-			VStack {
-				Image(systemName: "arrow.down.circle.fill")
-				Text("Scroll down")
+			ForEach(Self.items) { item in
+				LifecycleMonitor(label: item.id, recordEntry: recordEntry)
 			}
-			.font(.largeTitle)
-			.padding(.vertical)
-
-			Spacer(minLength: 650)
-
-			LifecycleMonitor(label: "Bottom", recordEntry: recordEntry)
 		}
 	}
 }

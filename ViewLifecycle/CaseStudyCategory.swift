@@ -18,25 +18,13 @@ extension CaseStudyCategory {
 			]
 		),
 		CaseStudyCategory(
-			id: "scrollview",
-			label: "ScrollView",
+			id: "scrolling",
+			label: "Scrolling containers",
 			caseStudies: [
 				.scrollViewStatic,
-				.scrollViewDynamic,
-			]
-		),
-		CaseStudyCategory(
-			id: "list",
-			label: "List",
-			caseStudies: [
 				.listStatic,
+				.scrollViewDynamic,
 				.listDynamic,
-			]
-		),
-		CaseStudyCategory(
-			id: "lazy",
-			label: "Lazy containers",
-			caseStudies: [
 				.lazyVStack,
 				.lazyVGrid,
 			]
