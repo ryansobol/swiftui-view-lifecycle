@@ -74,6 +74,8 @@ private struct EventLogEmptyState: View {
 private struct EventLogEntries: View {
 	let entries: [TimelineEntry]
 
+	@State private var scrollPosition = ScrollPosition(edge: .bottom)
+
 	var body: some View {
 		ScrollView {
 			LazyVStack(alignment: .leading, spacing: 2) {
@@ -82,7 +84,13 @@ private struct EventLogEntries: View {
 				}
 			}
 		}
+		.scrollPosition(self.$scrollPosition)
 		.scrollIndicatorsFlash(trigger: self.entries.count)
+		.onChange(of: self.entries.count) {
+			withAnimation {
+				self.scrollPosition.scrollTo(edge: .bottom)
+			}
+		}
 	}
 }
 
