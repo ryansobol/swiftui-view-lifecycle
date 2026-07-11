@@ -303,6 +303,12 @@ struct MainContent: View {
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
 
+		case .sheetIsPresented:
+			CaseStudySheetIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .sheetItem:
+			CaseStudySheetItem(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .tabView:
 			CaseStudyTabView(recordEntry: self.recordCurrentCaseStudyEntry)
 		}

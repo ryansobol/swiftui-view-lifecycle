@@ -7,6 +7,8 @@ enum CaseStudy: Hashable {
 	case list
 	case navigationStack
 	case opacity
+	case sheetIsPresented
+	case sheetItem
 	case `switch`
 	case tabView
 	case vStack
@@ -29,6 +31,8 @@ extension CaseStudy {
 		case .list: "List"
 		case .navigationStack: "NavigationStack"
 		case .opacity: ".opacity(_:)"
+		case .sheetIsPresented: ".sheet(isPresented:)"
+		case .sheetItem: ".sheet(item:)"
 		case .switch: "switch"
 		case .tabView: "TabView"
 		case .vStack: "ScrollView + VStack"
@@ -54,6 +58,8 @@ extension CaseStudy {
 		case .list: "Shows List rows starting lazily and being recycled."
 		case .navigationStack: "Shows how stack levels stay alive until a pop removes them."
 		case .opacity: "Shows that hiding a view with opacity keeps it alive."
+		case .sheetIsPresented: "Shows the presenter staying alive while sheet content appears and disappears."
+		case .sheetItem: "Shows the presenter staying alive while sheet content swaps between items."
 		case .switch: "Shows how each selected case has its own view identity."
 		case .tabView: "Shows how tabs are created on demand and kept alive offscreen."
 		case .vStack: "Shows stack children starting eagerly before scrolling."
@@ -70,6 +76,8 @@ extension CaseStudy {
 		case .list: "case-study.list"
 		case .navigationStack: "case-study.navigation-stack"
 		case .opacity: "case-study.opacity"
+		case .sheetIsPresented: "case-study.sheet-is-presented"
+		case .sheetItem: "case-study.sheet-item"
 		case .switch: "case-study.switch"
 		case .tabView: "case-study.tab-view"
 		case .vStack: "case-study.v-stack"
