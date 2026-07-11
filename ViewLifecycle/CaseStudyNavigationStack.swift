@@ -80,7 +80,7 @@ extension CaseStudyNavigationStack {
 					} label: {
 						HStack(spacing: 12) {
 							LifecycleMonitor(
-								label: self.level.monitorLabel,
+								title: self.level.monitorLabel,
 								recordEntry: self.recordEntry
 							)
 

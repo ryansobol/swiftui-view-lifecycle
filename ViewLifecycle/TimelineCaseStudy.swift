@@ -24,7 +24,7 @@ private struct TimelineCaseStudyPreview: View {
 		TimelineCaseStudy(
 			explanation: "This preview exercises the timeline shell with a manual action and a lifecycle monitor."
 		) {
-			LifecycleMonitor(label: "Preview monitor", recordEntry: { _ in })
+			LifecycleMonitor(title: "Preview monitor", recordEntry: { _ in })
 		}
 	}
 }

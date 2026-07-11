@@ -9,7 +9,7 @@ struct CaseStudySheetItem: View {
 		TimelineCaseStudy(
 			explanation: "`sheet(item:)` keeps the presenter alive while item identity controls the sheet content. Replacing the item removes the sheet before the next sheet creates content. Dismissing then presenting the same sheet again recreates fresh content."
 		) {
-			LifecycleMonitor(label: "Presenter", recordEntry: self.recordEntry)
+			LifecycleMonitor(title: "Presenter", recordEntry: self.recordEntry)
 
 			VStack(spacing: 12) {
 				ForEach(PresentedSheet.allCases) { sheet in
@@ -92,7 +92,7 @@ private struct SheetContent: View {
 
 	var body: some View {
 		VStack(spacing: 16) {
-			LifecycleMonitor(label: self.sheet.monitorLabel, recordEntry: self.recordEntry)
+			LifecycleMonitor(title: self.sheet.monitorLabel, recordEntry: self.recordEntry)
 
 			CaseStudyExplanation(
 				text: "This content belongs to `\(self.sheet.monitorLabel)`. Replacing the item removes this sheet before the next sheet creates content. Dismissing and presenting the same sheet again recreates fresh content."

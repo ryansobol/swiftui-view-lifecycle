@@ -241,6 +241,16 @@ struct Detail: View {
 			}
 		}
 		.navigationTitle(self.caseStudy?.navigationTitle ?? "")
+		.toolbarTitleDisplayMode(self.toolbarTitleDisplayMode)
+	}
+
+	private var toolbarTitleDisplayMode: ToolbarTitleDisplayMode {
+		guard let caseStudy = self.caseStudy else { return .automatic }
+
+		return switch caseStudy {
+		case .coverIsPresented: .inline
+		default: .automatic
+		}
 	}
 }
 
@@ -308,6 +318,12 @@ struct MainContent: View {
 
 		case .sheetItem:
 			CaseStudySheetItem(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .coverIsPresented:
+			CaseStudyCoverIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .coverItem:
+			CaseStudyCoverItem(recordEntry: self.recordCurrentCaseStudyEntry)
 
 		case .tabView:
 			CaseStudyTabView(recordEntry: self.recordCurrentCaseStudyEntry)

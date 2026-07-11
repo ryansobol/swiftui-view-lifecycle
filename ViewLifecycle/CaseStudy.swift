@@ -1,4 +1,6 @@
 enum CaseStudy: Hashable {
+	case coverIsPresented
+	case coverItem
 	case id
 	case ifElse
 	case ifTransition
@@ -23,6 +25,8 @@ extension CaseStudy: Identifiable {
 extension CaseStudy {
 	var label: String {
 		return switch self {
+		case .coverIsPresented: ".fullScreenCover(isPresented:)"
+		case .coverItem: ".fullScreenCover(item:)"
 		case .id: ".id(_:)"
 		case .ifElse: "if/else"
 		case .ifTransition: "if transition"
@@ -50,6 +54,8 @@ extension CaseStudy {
 
 	var description: String {
 		return switch self {
+		case .coverIsPresented: "Shows the presenter staying alive while cover content appears and disappears."
+		case .coverItem: "Shows the presenter staying alive while cover content changes with the selected item."
 		case .id: "Shows how changing view identity replaces a view."
 		case .ifElse: "Shows how switching conditional branches changes view identity."
 		case .ifTransition: "Shows how transition timing affects an inserted view's lifetime and identity."
@@ -68,6 +74,8 @@ extension CaseStudy {
 
 	var logCategory: String {
 		return switch self {
+		case .coverIsPresented: "case-study.cover-is-presented"
+		case .coverItem: "case-study.cover-item"
 		case .id: "case-study.id"
 		case .ifElse: "case-study.if-else"
 		case .ifTransition: "case-study.if-transition"

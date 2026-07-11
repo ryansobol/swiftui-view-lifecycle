@@ -29,7 +29,7 @@ struct CaseStudyLazyVGrid: View {
 				ForEach(self.items) { item in
 					VStack(spacing: 4) {
 						LifecycleMonitor(
-							label: item.id,
+							title: item.id,
 							style: .compact,
 							recordEntry: self.recordEntry
 						)

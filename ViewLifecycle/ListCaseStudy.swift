@@ -25,7 +25,7 @@ private struct ListCaseStudyPreview: View {
 		ListCaseStudy(
 			explanation: "This preview exercises the list shell with a manual action and a lifecycle monitor."
 		) {
-			LifecycleMonitor(label: "Preview monitor", recordEntry: { _ in })
+			LifecycleMonitor(title: "Preview monitor", recordEntry: { _ in })
 		}
 	}
 }

@@ -17,10 +17,10 @@ struct CaseStudyIfElse: View {
 			}
 
 			if self.isShowingIfBranch {
-				LifecycleMonitor(label: "if", recordEntry: self.recordEntry)
+				LifecycleMonitor(title: "if", recordEntry: self.recordEntry)
 			}
 			else {
-				LifecycleMonitor(label: "else", recordEntry: self.recordEntry)
+				LifecycleMonitor(title: "else", recordEntry: self.recordEntry)
 			}
 		}
 	}

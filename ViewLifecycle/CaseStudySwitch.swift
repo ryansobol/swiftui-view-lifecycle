@@ -31,13 +31,13 @@ struct CaseStudySwitch: View {
 
 			switch self.selectedCase {
 			case .one:
-				LifecycleMonitor(label: SwitchCase.one.rawValue, recordEntry: self.recordEntry)
+				LifecycleMonitor(title: SwitchCase.one.rawValue, recordEntry: self.recordEntry)
 
 			case .two:
-				LifecycleMonitor(label: SwitchCase.two.rawValue, recordEntry: self.recordEntry)
+				LifecycleMonitor(title: SwitchCase.two.rawValue, recordEntry: self.recordEntry)
 
 			case .three:
-				LifecycleMonitor(label: SwitchCase.three.rawValue, recordEntry: self.recordEntry)
+				LifecycleMonitor(title: SwitchCase.three.rawValue, recordEntry: self.recordEntry)
 			}
 		}
 	}

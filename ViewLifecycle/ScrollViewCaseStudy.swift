@@ -48,7 +48,7 @@ private struct ScrollViewCaseStudyPreview: View {
 		ScrollViewCaseStudy(
 			explanation: "This preview exercises the scroll view shell with a manual action and a lifecycle monitor."
 		) {
-			LifecycleMonitor(label: "Preview monitor", recordEntry: { _ in })
+			LifecycleMonitor(title: "Preview monitor", recordEntry: { _ in })
 		}
 	}
 }

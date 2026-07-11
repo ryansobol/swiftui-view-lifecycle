@@ -23,7 +23,7 @@ struct CaseStudyVStack: View {
 			)
 
 			ForEach(self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+				LifecycleMonitor(title: item.id, recordEntry: self.recordEntry)
 					.caseStudySwipeActions {
 						CaseStudySwipeActionButton {
 							self.delete(item, recordEntry: self.recordEntry)

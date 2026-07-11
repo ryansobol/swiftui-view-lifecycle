@@ -39,7 +39,7 @@ private struct TabContent: View {
 
 	var body: some View {
 		VStack(spacing: 16) {
-			LifecycleMonitor(label: self.label, recordEntry: self.recordEntry)
+			LifecycleMonitor(title: self.label, recordEntry: self.recordEntry)
 
 			CaseStudyExplanation(text: CaseStudyTabView.explanation)
 		}

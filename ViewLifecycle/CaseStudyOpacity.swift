@@ -20,7 +20,7 @@ struct CaseStudyOpacity: View {
 				Text("Opacity: \(self.opacityPercentage)")
 			}
 
-			LifecycleMonitor(label: ".opacity(\(self.opacityPercentage))", recordEntry: self.recordEntry)
+			LifecycleMonitor(title: ".opacity(\(self.opacityPercentage))", recordEntry: self.recordEntry)
 				.opacity(self.opacity)
 		}
 	}

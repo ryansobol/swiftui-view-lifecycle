@@ -15,7 +15,7 @@ struct CaseStudyIDModifier: View {
 			}
 			.buttonStyle(.glassProminent)
 
-			LifecycleMonitor(label: ".id(\(self.generation))", recordEntry: self.recordEntry)
+			LifecycleMonitor(title: ".id(\(self.generation))", recordEntry: self.recordEntry)
 				.id(self.generation)
 		}
 	}

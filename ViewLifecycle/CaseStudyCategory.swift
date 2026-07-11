@@ -35,6 +35,8 @@ extension CaseStudyCategory {
 				.tabView,
 				.sheetIsPresented,
 				.sheetItem,
+				.coverIsPresented,
+				.coverItem,
 			]
 		),
 	]

@@ -7,7 +7,8 @@ struct LifecycleMonitor: View {
 		case compact
 	}
 
-	var label: String
+	var title: String
+	var subtitle: String = ""
 	var style: Style = .standard
 	var recordEntry: (TimelineEntry) -> Void = { _ in }
 
@@ -19,8 +20,17 @@ struct LifecycleMonitor: View {
 
 	var body: some View {
 		VStack(spacing: self.verticalSpacing) {
-			Text(self.label)
-				.font(self.titleFont)
+			VStack(spacing: 4) {
+				Text(self.title)
+					.font(self.titleFont)
+
+				if !self.subtitle.isEmpty {
+					Text(self.subtitle)
+						.font(self.bodyFont)
+						.foregroundStyle(.secondary)
+				}
+			}
+
 			Grid(horizontalSpacing: self.horizontalSpacing) {
 				GridRow(alignment: .firstTextBaseline) {
 					Text("@State")
@@ -68,7 +78,7 @@ struct LifecycleMonitor: View {
 		}
 		.task {
 			self.recordStateCreatedEntryIfNeeded()
-			let entry = self.record(.taskStarted(self.label))
+			let entry = self.record(.taskStarted(self.title))
 			let animation: Animation? = self.taskStartedEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.taskStartedEntry = entry
@@ -76,7 +86,7 @@ struct LifecycleMonitor: View {
 		}
 		.onAppear {
 			self.recordStateCreatedEntryIfNeeded()
-			let entry = self.record(.viewAppeared(self.label))
+			let entry = self.record(.viewAppeared(self.title))
 			let animation: Animation? = self.onAppearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.onAppearEntry = entry
@@ -84,7 +94,7 @@ struct LifecycleMonitor: View {
 		}
 		.onDisappear {
 			self.recordStateCreatedEntryIfNeeded()
-			let entry = self.record(.viewDisappeared(self.label))
+			let entry = self.record(.viewDisappeared(self.title))
 			let animation: Animation? = self.onDisappearEntry == nil ? nil : .easeOut(duration: 1)
 			withAnimation(animation) {
 				self.onDisappearEntry = entry
@@ -136,7 +146,7 @@ struct LifecycleMonitor: View {
 
 	private func recordStateCreatedEntryIfNeeded() -> Void {
 		guard self.stateCreatedEntry == nil else { return }
-		let entry = TimelineEntry(event: .lifecycle(.stateCreated(self.label)))
+		let entry = TimelineEntry(event: .lifecycle(.stateCreated(self.title)))
 		self.stateCreatedEntry = entry
 		self.recordEntry(entry)
 	}
@@ -151,7 +161,7 @@ struct LifecycleMonitor: View {
 #Preview("Standard") {
 	List {
 		ForEach(1 ..< 11) { i in
-			LifecycleMonitor(label: "\(i)")
+			LifecycleMonitor(title: "\(i)")
 		}
 	}
 }
@@ -162,7 +172,7 @@ struct LifecycleMonitor: View {
 			columns: [GridItem(.adaptive(minimum: 180), spacing: 4)]
 		) {
 			ForEach(1 ..< 21) { i in
-				LifecycleMonitor(label: "Item \(i)", style: .compact)
+				LifecycleMonitor(title: "Item \(i)", style: .compact)
 					.padding(4)
 			}
 		}

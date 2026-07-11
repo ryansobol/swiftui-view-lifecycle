@@ -23,7 +23,7 @@ struct CaseStudyList: View {
 			)
 
 			ForEach(self.items) { item in
-				LifecycleMonitor(label: item.id, recordEntry: self.recordEntry)
+				LifecycleMonitor(title: item.id, recordEntry: self.recordEntry)
 			}
 			.onDelete { offsets in
 				self.deleteItems(at: offsets, recordEntry: self.recordEntry)

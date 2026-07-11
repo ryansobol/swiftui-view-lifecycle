@@ -70,7 +70,7 @@ private struct TransitionPanel: View {
 			Text("Panel")
 				.font(.headline)
 
-			LifecycleMonitor(label: "Panel", recordEntry: self.recordEntry)
+			LifecycleMonitor(title: "Panel", recordEntry: self.recordEntry)
 		}
 		.padding()
 		.background {

@@ -1,51 +1,51 @@
 import SwiftUI
 
-struct CaseStudySheetIsPresented: View {
+struct CaseStudyCoverIsPresented: View {
 	let recordEntry: (TimelineEntry) -> Void
 
 	@State private var isPresented = false
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "`sheet(isPresented:)` keeps the presenter alive while sheet content appears. When the sheet disappears, presenting the sheet again recreates fresh content."
+			explanation: "`fullScreenCover(isPresented:)` keeps the presenter alive while cover content appears. When the content disappears, presenting the cover again recreates fresh content."
 		) {
 			LifecycleMonitor(title: "Presenter", recordEntry: self.recordEntry)
 
 			Button {
 				self.present()
 			} label: {
-				Label("Present sheet", systemImage: "rectangle.bottomthird.inset.filled")
+				Label("Present cover", systemImage: "rectangle.inset.filled")
 			}
 			.buttonStyle(.glassProminent)
 			.frame(maxWidth: .infinity)
 		}
-		.sheet(isPresented: self.$isPresented) {
-			IsPresentedSheetContent(recordEntry: self.recordEntry)
+		.fullScreenCover(isPresented: self.$isPresented) {
+			IsPresentedCoverContent(recordEntry: self.recordEntry)
 		}
 	}
 
 	private func present() -> Void {
-		self.recordEntry(TimelineEntry(event: .action(.selected("Sheet"))))
+		self.recordEntry(TimelineEntry(event: .action(.selected("Cover"))))
 
 		self.isPresented = true
 	}
 }
 
-private struct IsPresentedSheetContent: View {
+private struct IsPresentedCoverContent: View {
 	@Environment(\.dismiss) private var dismiss
 
 	let recordEntry: (TimelineEntry) -> Void
 
 	var body: some View {
 		VStack(spacing: 16) {
-			LifecycleMonitor(title: "Sheet", recordEntry: self.recordEntry)
+			LifecycleMonitor(title: "Cover", recordEntry: self.recordEntry)
 
 			CaseStudyExplanation(
-				text: "This content exists only while the sheet is presented. Dismiss and present again to see a new `Sheet` monitor."
+				text: "This content exists only while the cover is presented. Dismiss and present again to see a new `Cover` monitor."
 			)
 
 			Button(role: .destructive) {
-				self.recordEntry(TimelineEntry(event: .action(.tapped("Dismiss sheet"))))
+				self.recordEntry(TimelineEntry(event: .action(.tapped("Dismiss cover"))))
 
 				self.dismiss()
 			} label: {
@@ -63,15 +63,13 @@ private struct IsPresentedSheetContent: View {
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 		.padding()
-		.presentationDetents([.medium, .large])
-		.presentationDragIndicator(.visible)
 	}
 }
 
 #Preview {
 	LifecycleSession { recordEntry in
-		CaseStudySheetIsPresented { entry in
-			recordEntry(.sheetIsPresented, entry)
+		CaseStudyCoverIsPresented { entry in
+			recordEntry(.coverIsPresented, entry)
 		}
 	}
 }
