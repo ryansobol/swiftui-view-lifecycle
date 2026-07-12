@@ -112,7 +112,7 @@ private struct CaseStudySwipeActionsModifier<Actions: View>: ViewModifier {
 	}
 
 	private func endDrag(translation: CGFloat) -> Void {
-		let shouldOpen = (-translation) > caseStudySwipeOpenThreshold
+		let shouldOpen = -translation > caseStudySwipeOpenThreshold
 
 		self.isOpen = shouldOpen
 		self.openActionID.wrappedValue = shouldOpen ? self.actionID : nil
@@ -138,8 +138,8 @@ private struct CaseStudySwipeActionsModifier<Actions: View>: ViewModifier {
 }
 
 extension View {
-	func caseStudySwipeActions<Actions: View>(
-		@ViewBuilder actions: @escaping () -> Actions
+	func caseStudySwipeActions(
+		@ViewBuilder actions: @escaping () -> some View
 	) -> some View {
 		self.modifier(CaseStudySwipeActionsModifier(actions: actions))
 	}

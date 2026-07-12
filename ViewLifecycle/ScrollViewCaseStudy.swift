@@ -21,7 +21,8 @@ struct ScrollViewCaseStudy<Content: View>: View {
 		if self.usesSwipeActionsContainer {
 			self.scrollView
 				.caseStudySwipeActionsContainer()
-		} else {
+		}
+		else {
 			self.scrollView
 		}
 	}

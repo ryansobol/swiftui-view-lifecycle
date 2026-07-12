@@ -7,7 +7,7 @@ struct CaseStudyCoverItem: View {
 
 	var body: some View {
 		TimelineCaseStudy(
-			explanation: "`fullScreenCover(item:)` keeps the presenter alive while the selected item present the cover content. Replacing the item preserves the cover's identity and reuses its state, even as the cover disappears, re-appears, and restarts its task again."
+			explanation: "`fullScreenCover(item:)` keeps the presenter alive while the selected item presents cover content. Replacing the item preserves the cover's identity and reuses its state, even as the cover disappears, reappears, and restarts its task."
 		) {
 			LifecycleMonitor(title: "Presenter", recordEntry: self.recordEntry)
 

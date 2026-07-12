@@ -248,8 +248,15 @@ struct Detail: View {
 		guard let caseStudy = self.caseStudy else { return .automatic }
 
 		return switch caseStudy {
-		case .coverIsPresented, .popoverSheetIsPresented, .popoverSheetItem: .inline
-		default: .automatic
+		case .coverIsPresented,
+		     .popoverSheetIsPresented,
+		     .popoverSheetItem,
+		     .popoverCoverIsPresented,
+		     .popoverCoverItem:
+			.inline
+
+		default:
+			.automatic
 		}
 	}
 }
@@ -330,6 +337,12 @@ struct MainContent: View {
 
 		case .popoverSheetItem:
 			CaseStudyPopoverSheetItem(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .popoverCoverIsPresented:
+			CaseStudyPopoverCoverIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .popoverCoverItem:
+			CaseStudyPopoverCoverItem(recordEntry: self.recordCurrentCaseStudyEntry)
 
 		case .popoverIsPresented:
 			CaseStudyPopoverIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
