@@ -33,17 +33,17 @@ extension CaseStudyCategory {
 			caseStudies: [
 				.navigationStack,
 				.tabView,
-				.inspectorIsPresented,
 				.sheetIsPresented,
 				.sheetItem,
 				.coverIsPresented,
 				.coverItem,
+				.popoverIsPresented,
+				.popoverItem,
 				.popoverSheetIsPresented,
 				.popoverSheetItem,
 				.popoverCoverIsPresented,
 				.popoverCoverItem,
-				.popoverIsPresented,
-				.popoverItem,
+				.inspectorIsPresented,
 			]
 		),
 	]
