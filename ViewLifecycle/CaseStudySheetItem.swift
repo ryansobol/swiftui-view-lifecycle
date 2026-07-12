@@ -21,7 +21,7 @@ struct CaseStudySheetItem: View {
 					.buttonStyle(.glassProminent)
 				}
 			}
-			.frame(maxWidth: .infinity, alignment: .center)
+			.frame(maxWidth: .infinity)
 		}
 		.sheet(item: self.$presentedSheet) { sheet in
 			SheetContent(
@@ -126,9 +126,8 @@ private struct SheetContent: View {
 				.buttonStyle(.glassProminent)
 				.tint(.red)
 			}
-			.frame(maxWidth: .infinity)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+		.frame(maxHeight: .infinity, alignment: .top)
 		.padding()
 		.presentationDetents([.medium, .large])
 		.presentationDragIndicator(.visible)

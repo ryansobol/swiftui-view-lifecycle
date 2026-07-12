@@ -11,6 +11,8 @@ enum CaseStudy: Hashable {
 	case opacity
 	case popoverIsPresented
 	case popoverItem
+	case popoverSheetIsPresented
+	case popoverSheetItem
 	case sheetIsPresented
 	case sheetItem
 	case `switch`
@@ -39,6 +41,8 @@ extension CaseStudy {
 		case .opacity: ".opacity(_:)"
 		case .popoverIsPresented: ".popover(isPresented:)"
 		case .popoverItem: ".popover(item:)"
+		case .popoverSheetIsPresented: ".popover(isPresented:) as sheet"
+		case .popoverSheetItem: ".popover(item:) as sheet"
 		case .sheetIsPresented: ".sheet(isPresented:)"
 		case .sheetItem: ".sheet(item:)"
 		case .switch: "switch"
@@ -70,6 +74,8 @@ extension CaseStudy {
 		case .opacity: "Shows that hiding a view with opacity keeps it alive."
 		case .popoverIsPresented: "Shows the presenter staying alive while popover content appears and disappears."
 		case .popoverItem: "Shows the presenter staying alive while popover content changes with the selected item."
+		case .popoverSheetIsPresented: "Shows the presenter staying alive while popover sheet content appears and disappears."
+		case .popoverSheetItem: "Shows the presenter staying alive while popover sheet content swaps between items."
 		case .sheetIsPresented: "Shows the presenter staying alive while sheet content appears and disappears."
 		case .sheetItem: "Shows the presenter staying alive while sheet content swaps between items."
 		case .switch: "Shows how each selected case has its own view identity."
@@ -92,6 +98,8 @@ extension CaseStudy {
 		case .opacity: "case-study.opacity"
 		case .popoverIsPresented: "case-study.popover-is-presented"
 		case .popoverItem: "case-study.popover-item"
+		case .popoverSheetIsPresented: "case-study.popover-sheet-is-presented"
+		case .popoverSheetItem: "case-study.popover-sheet-item"
 		case .sheetIsPresented: "case-study.sheet-is-presented"
 		case .sheetItem: "case-study.sheet-item"
 		case .switch: "case-study.switch"

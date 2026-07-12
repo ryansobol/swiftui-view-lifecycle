@@ -37,6 +37,8 @@ extension CaseStudyCategory {
 				.sheetItem,
 				.coverIsPresented,
 				.coverItem,
+				.popoverSheetIsPresented,
+				.popoverSheetItem,
 				.popoverIsPresented,
 				.popoverItem,
 			]

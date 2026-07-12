@@ -16,8 +16,8 @@ struct CaseStudyCoverIsPresented: View {
 			} label: {
 				Label("Present cover", systemImage: "rectangle.inset.filled")
 			}
-			.buttonStyle(.glassProminent)
 			.frame(maxWidth: .infinity)
+			.buttonStyle(.glassProminent)
 		}
 		.fullScreenCover(isPresented: self.$isPresented) {
 			IsPresentedCoverContent(recordEntry: self.recordEntry)
@@ -55,13 +55,11 @@ private struct IsPresentedCoverContent: View {
 				} icon: {
 					Image(systemName: "xmark.circle")
 				}
-				.lineLimit(1)
 			}
 			.buttonStyle(.glassProminent)
 			.tint(.red)
-			.frame(maxWidth: .infinity, alignment: .center)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+		.frame(maxHeight: .infinity, alignment: .top)
 		.padding()
 	}
 }

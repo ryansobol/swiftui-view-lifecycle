@@ -16,6 +16,7 @@ struct CaseStudyPopoverIsPresented: View {
 			} label: {
 				Label("Present popover", systemImage: "rectangle.on.rectangle")
 			}
+			.frame(maxWidth: .infinity)
 			.buttonStyle(.glassProminent)
 			.popover(
 				isPresented: self.$isPresented,
@@ -23,9 +24,7 @@ struct CaseStudyPopoverIsPresented: View {
 				arrowEdge: .bottom
 			) {
 				IsPresentedPopoverContent(recordEntry: self.recordEntry)
-					.presentationCompactAdaptation(.popover)
 			}
-			.frame(maxWidth: .infinity)
 		}
 	}
 
@@ -47,7 +46,8 @@ private struct IsPresentedPopoverContent: View {
 				recordEntry: self.recordEntry
 			)
 		}
-		.padding(16)
+		.padding()
+		.presentationCompactAdaptation(.popover)
 	}
 }
 

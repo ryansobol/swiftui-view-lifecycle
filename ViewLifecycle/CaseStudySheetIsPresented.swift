@@ -16,8 +16,8 @@ struct CaseStudySheetIsPresented: View {
 			} label: {
 				Label("Present sheet", systemImage: "rectangle.bottomthird.inset.filled")
 			}
-			.buttonStyle(.glassProminent)
 			.frame(maxWidth: .infinity)
+			.buttonStyle(.glassProminent)
 		}
 		.sheet(isPresented: self.$isPresented) {
 			IsPresentedSheetContent(recordEntry: self.recordEntry)
@@ -55,13 +55,11 @@ private struct IsPresentedSheetContent: View {
 				} icon: {
 					Image(systemName: "xmark.circle")
 				}
-				.lineLimit(1)
 			}
 			.buttonStyle(.glassProminent)
 			.tint(.red)
-			.frame(maxWidth: .infinity, alignment: .center)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+		.frame(maxHeight: .infinity, alignment: .top)
 		.padding()
 		.presentationDetents([.medium, .large])
 		.presentationDragIndicator(.visible)

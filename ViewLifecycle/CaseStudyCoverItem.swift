@@ -130,9 +130,8 @@ private struct CoverContent: View {
 				.buttonStyle(.glassProminent)
 				.tint(.red)
 			}
-			.frame(maxWidth: .infinity)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+		.frame(maxHeight: .infinity, alignment: .top)
 		.padding()
 	}
 }

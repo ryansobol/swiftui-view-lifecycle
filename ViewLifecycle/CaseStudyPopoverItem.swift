@@ -21,7 +21,7 @@ struct CaseStudyPopoverItem: View {
 					.buttonStyle(.glassProminent)
 				}
 			}
-			.frame(maxWidth: .infinity, alignment: .center)
+			.frame(maxWidth: .infinity)
 			.popover(
 				item: self.$presentedPopover,
 				attachmentAnchor: .point(.top),
@@ -32,7 +32,6 @@ struct CaseStudyPopoverItem: View {
 					recordEntry: self.recordEntry,
 					present: self.present
 				)
-				.presentationCompactAdaptation(.popover)
 			}
 		}
 	}
@@ -112,7 +111,8 @@ private struct PopoverContent: View {
 			}
 			.buttonStyle(.glassProminent)
 		}
-		.padding(16)
+		.padding()
+		.presentationCompactAdaptation(.popover)
 	}
 }
 
