@@ -325,6 +325,12 @@ struct MainContent: View {
 		case .coverItem:
 			CaseStudyCoverItem(recordEntry: self.recordCurrentCaseStudyEntry)
 
+		case .popoverIsPresented:
+			CaseStudyPopoverIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .popoverItem:
+			CaseStudyPopoverItem(recordEntry: self.recordCurrentCaseStudyEntry)
+
 		case .tabView:
 			CaseStudyTabView(recordEntry: self.recordCurrentCaseStudyEntry)
 		}

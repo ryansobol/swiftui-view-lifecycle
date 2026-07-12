@@ -9,6 +9,8 @@ enum CaseStudy: Hashable {
 	case list
 	case navigationStack
 	case opacity
+	case popoverIsPresented
+	case popoverItem
 	case sheetIsPresented
 	case sheetItem
 	case `switch`
@@ -35,6 +37,8 @@ extension CaseStudy {
 		case .list: "List"
 		case .navigationStack: "NavigationStack"
 		case .opacity: ".opacity(_:)"
+		case .popoverIsPresented: ".popover(isPresented:)"
+		case .popoverItem: ".popover(item:)"
 		case .sheetIsPresented: ".sheet(isPresented:)"
 		case .sheetItem: ".sheet(item:)"
 		case .switch: "switch"
@@ -64,6 +68,8 @@ extension CaseStudy {
 		case .list: "Shows List rows starting lazily and being recycled."
 		case .navigationStack: "Shows how stack levels stay alive until a pop removes them."
 		case .opacity: "Shows that hiding a view with opacity keeps it alive."
+		case .popoverIsPresented: "Shows the presenter staying alive while popover content appears and disappears."
+		case .popoverItem: "Shows the presenter staying alive while popover content changes with the selected item."
 		case .sheetIsPresented: "Shows the presenter staying alive while sheet content appears and disappears."
 		case .sheetItem: "Shows the presenter staying alive while sheet content swaps between items."
 		case .switch: "Shows how each selected case has its own view identity."
@@ -84,6 +90,8 @@ extension CaseStudy {
 		case .list: "case-study.list"
 		case .navigationStack: "case-study.navigation-stack"
 		case .opacity: "case-study.opacity"
+		case .popoverIsPresented: "case-study.popover-is-presented"
+		case .popoverItem: "case-study.popover-item"
 		case .sheetIsPresented: "case-study.sheet-is-presented"
 		case .sheetItem: "case-study.sheet-item"
 		case .switch: "case-study.switch"
