@@ -25,7 +25,7 @@ struct CaseStudyCoverIsPresented: View {
 	}
 
 	private func present() -> Void {
-		self.recordEntry(TimelineEntry(event: .action(.selected("Cover"))))
+		self.recordEntry(TimelineEntry(event: .action(.tapped("Dismiss cover"))))
 
 		self.isPresented = true
 	}

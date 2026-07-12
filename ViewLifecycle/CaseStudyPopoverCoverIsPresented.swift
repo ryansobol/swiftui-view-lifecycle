@@ -29,7 +29,7 @@ struct CaseStudyPopoverCoverIsPresented: View {
 	}
 
 	private func present() -> Void {
-		self.recordEntry(TimelineEntry(event: .action(.selected("Popover"))))
+		self.recordEntry(TimelineEntry(event: .action(.tapped("Present popover"))))
 
 		self.isPresented = true
 	}

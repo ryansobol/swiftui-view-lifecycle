@@ -25,7 +25,7 @@ struct CaseStudySheetIsPresented: View {
 	}
 
 	private func present() -> Void {
-		self.recordEntry(TimelineEntry(event: .action(.selected("Sheet"))))
+		self.recordEntry(TimelineEntry(event: .action(.tapped("Present sheet"))))
 
 		self.isPresented = true
 	}

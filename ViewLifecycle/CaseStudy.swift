@@ -4,6 +4,7 @@ enum CaseStudy: Hashable {
 	case id
 	case ifElse
 	case ifTransition
+	case inspectorIsPresented
 	case lazyVGrid
 	case lazyVStack
 	case list
@@ -36,6 +37,7 @@ extension CaseStudy {
 		case .id: ".id(_:)"
 		case .ifElse: "if/else"
 		case .ifTransition: "if transition"
+		case .inspectorIsPresented: ".inspector(isPresented:)"
 		case .lazyVGrid: "ScrollView + LazyVGrid"
 		case .lazyVStack: "ScrollView + LazyVStack"
 		case .list: "List"
@@ -71,6 +73,7 @@ extension CaseStudy {
 		case .id: "Shows how changing view identity replaces a view."
 		case .ifElse: "Shows how switching conditional branches changes view identity."
 		case .ifTransition: "Shows how transition timing affects an inserted view's lifetime and identity."
+		case .inspectorIsPresented: "Shows inspector content starting early and reappearing with preserved state."
 		case .lazyVGrid: "Shows grid cells starting lazily in batches of rows."
 		case .lazyVStack: "Shows stack children starting lazily near the viewport."
 		case .list: "Shows List rows starting lazily and being recycled."
@@ -97,6 +100,7 @@ extension CaseStudy {
 		case .id: "case-study.id"
 		case .ifElse: "case-study.if-else"
 		case .ifTransition: "case-study.if-transition"
+		case .inspectorIsPresented: "case-study.inspector-is-presented"
 		case .lazyVGrid: "case-study.lazy-v-grid"
 		case .lazyVStack: "case-study.lazy-v-stack"
 		case .list: "case-study.list"

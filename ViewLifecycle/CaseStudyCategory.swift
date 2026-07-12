@@ -33,6 +33,7 @@ extension CaseStudyCategory {
 			caseStudies: [
 				.navigationStack,
 				.tabView,
+				.inspectorIsPresented,
 				.sheetIsPresented,
 				.sheetItem,
 				.coverIsPresented,

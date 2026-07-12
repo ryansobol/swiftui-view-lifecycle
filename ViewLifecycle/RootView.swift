@@ -249,6 +249,7 @@ struct Detail: View {
 
 		return switch caseStudy {
 		case .coverIsPresented,
+		     .inspectorIsPresented,
 		     .popoverSheetIsPresented,
 		     .popoverSheetItem,
 		     .popoverCoverIsPresented,
@@ -319,6 +320,9 @@ struct MainContent: View {
 
 		case .navigationStack:
 			CaseStudyNavigationStack(recordEntry: self.recordCurrentCaseStudyEntry)
+
+		case .inspectorIsPresented:
+			CaseStudyInspectorIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
 
 		case .sheetIsPresented:
 			CaseStudySheetIsPresented(recordEntry: self.recordCurrentCaseStudyEntry)
